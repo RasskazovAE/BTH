@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace BTH.Tests
 {
@@ -14,7 +15,7 @@ namespace BTH.Tests
         }
 
         [Test]
-        public async void ReadCsvTest()
+        public async Task ReadCsvTest()
         {
             var filePath = Path.Combine(Directory.GetCurrentDirectory(), "testdata\\data.csv");
 
