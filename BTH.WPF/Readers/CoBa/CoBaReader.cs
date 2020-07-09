@@ -1,11 +1,11 @@
-﻿using BankTransactionHistory.Entities;
+﻿using BHT.WPF.Entities;
 using BTH.WPF.Environment;
 using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BankTransactionHistory.Readers.CoBa
+namespace BHT.WPF.Readers.CoBa
 {
     public class CoBaReader : ICoBaReader
     {
@@ -32,7 +32,7 @@ namespace BankTransactionHistory.Readers.CoBa
                         Category = values[9]
                     };
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     // TODO: return statistic
                     return null;

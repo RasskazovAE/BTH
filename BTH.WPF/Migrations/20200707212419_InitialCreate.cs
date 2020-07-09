@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace BankTransactionHistory.Migrations
+namespace BHT.WPF.Migrations
 {
     public partial class InitialCreate : Migration
     {

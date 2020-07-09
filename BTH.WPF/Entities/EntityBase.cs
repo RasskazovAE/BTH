@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BankTransactionHistory.Entities
+namespace BHT.WPF.Entities
 {
     public abstract class EntityBase
     {

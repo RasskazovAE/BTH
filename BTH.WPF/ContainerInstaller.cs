@@ -1,9 +1,9 @@
-﻿using BankTransactionHistory.Entities;
-using BankTransactionHistory.Readers.CoBa;
-using BankTransactionHistory.Services.CoBa;
+﻿using BHT.WPF.Entities;
+using BHT.WPF.Readers.CoBa;
+using BHT.WPF.Services.CoBa;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace BankTransactionHistory
+namespace BHT.WPF
 {
     public static class ContainerInstaller
     {

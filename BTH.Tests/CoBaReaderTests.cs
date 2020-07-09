@@ -1,4 +1,4 @@
-using BankTransactionHistory.Readers.CoBa;
+using BHT.WPF.Readers.CoBa;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 using System.IO;

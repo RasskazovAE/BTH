@@ -4,7 +4,7 @@ using System;
 using System.IO;
 using System.Windows;
 
-namespace BankTransactionHistory
+namespace BHT.WPF
 {
     /// <summary>
     /// Interaction logic for App.xaml

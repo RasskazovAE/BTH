@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace BankTransactionHistory.Entities
+namespace BHT.WPF.Entities
 {
     public class DataContext : DbContext
     {

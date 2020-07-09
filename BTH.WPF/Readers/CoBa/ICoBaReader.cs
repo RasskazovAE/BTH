@@ -1,7 +1,7 @@
-﻿using BankTransactionHistory.Entities;
+﻿using BHT.WPF.Entities;
 using System.Threading.Tasks;
 
-namespace BankTransactionHistory.Readers.CoBa
+namespace BHT.WPF.Readers.CoBa
 {
     public interface ICoBaReader
     {

@@ -1,4 +1,4 @@
-﻿using BankTransactionHistory;
+﻿using BHT.WPF;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 

@@ -1,9 +1,9 @@
-﻿using BankTransactionHistory.Entities;
+﻿using BHT.WPF.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace BankTransactionHistory.Services.CoBa
+namespace BHT.WPF.Services.CoBa
 {
     public class CoBaService : ICoBaService
     {
