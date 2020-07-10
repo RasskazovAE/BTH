@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace BHT.WPF.Migrations
+namespace BHT.Core.Migrations
 {
     public partial class InitialCreate : Migration
     {

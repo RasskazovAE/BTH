@@ -1,18 +1,10 @@
-﻿using BHT.WPF;
-using Microsoft.Extensions.DependencyInjection;
-using System;
+﻿using MvvmCross.Tests;
+using NUnit.Framework;
 
 namespace BTH.Tests
 {
-    public class TestBase
+    [TestFixture]
+    public class TestBase : MvxIoCSupportingTest
     {
-        public IServiceProvider ServiceProvider { get; private set; }
-
-        public TestBase()
-        {
-            var serviceCollection = new ServiceCollection();
-            serviceCollection.ConfigureServices();
-            ServiceProvider = serviceCollection.BuildServiceProvider();
-        }
     }
 }

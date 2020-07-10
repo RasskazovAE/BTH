@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace BHT.WPF.Entities
+namespace BHT.Core.Entities
 {
     public class DataContext : DbContext
     {

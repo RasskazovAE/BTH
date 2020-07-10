@@ -1,8 +1,8 @@
-﻿using BHT.WPF.Entities;
+﻿using BHT.Core.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace BHT.WPF.Services.CoBa
+namespace BHT.Core.Services.CoBa
 {
     public interface ICoBaService
     {

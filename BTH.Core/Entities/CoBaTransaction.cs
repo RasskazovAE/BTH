@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BHT.WPF.Entities
+namespace BHT.Core.Entities
 {
     /// <summary>
     /// Transaction for commerzbank

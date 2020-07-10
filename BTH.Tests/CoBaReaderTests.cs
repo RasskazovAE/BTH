@@ -1,5 +1,5 @@
-using BHT.WPF.Readers.CoBa;
-using Microsoft.Extensions.DependencyInjection;
+using BHT.Core.Readers.CoBa;
+using BTH.Core;
 using NUnit.Framework;
 using System.IO;
 using System.Linq;
@@ -10,8 +10,10 @@ namespace BTH.Tests
     public class CoBaReaderTests : TestBase
     {
         [SetUp]
-        public void Setup()
+        public new void Setup()
         {
+            base.Setup();
+            Ioc.Install();
         }
 
         [Test]
@@ -19,7 +21,7 @@ namespace BTH.Tests
         {
             var filePath = Path.Combine(Directory.GetCurrentDirectory(), "testdata\\data.csv");
 
-            var reader = ServiceProvider.GetRequiredService<ICoBaReader>();
+            var reader = Ioc.Resolve<ICoBaReader>();
             var result = await reader.ParseCsvFileAsync(filePath);
 
             Assert.NotNull(result);

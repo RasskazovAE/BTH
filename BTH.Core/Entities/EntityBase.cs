@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BHT.WPF.Entities
+namespace BHT.Core.Entities
 {
     public abstract class EntityBase
     {

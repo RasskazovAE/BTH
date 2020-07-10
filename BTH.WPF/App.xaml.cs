@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using System;
+using MvvmCross.Core;
+using MvvmCross.Platforms.Wpf.Core;
+using MvvmCross.Platforms.Wpf.Views;
 using System.IO;
 using System.Windows;
 
@@ -9,9 +10,13 @@ namespace BHT.WPF
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App : Application
+    public partial class App : MvxApplication
     {
-        public IServiceProvider ServiceProvider { get; private set; }
+        protected override void RegisterSetup()
+        {
+            this.RegisterSetupType<MvxWpfSetup<BTH.Core.App>>();
+        }
+
         public IConfiguration Configuration { get; private set; }
 
         protected override void OnStartup(StartupEventArgs e)
@@ -21,13 +26,6 @@ namespace BHT.WPF
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
             Configuration = builder.Build();
-
-            var serviceCollection = new ServiceCollection();
-            serviceCollection.ConfigureServices();
-            ServiceProvider = serviceCollection.BuildServiceProvider();
-
-            var mainWindow = ServiceProvider.GetRequiredService<MainWindow>();
-            mainWindow.Show();
         }
     }
 }

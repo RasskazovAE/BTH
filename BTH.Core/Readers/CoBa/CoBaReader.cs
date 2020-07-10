@@ -1,11 +1,11 @@
-﻿using BHT.WPF.Entities;
-using BTH.WPF.Environment;
+﻿using BHT.Core.Entities;
+using BTH.Core.Environment;
 using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BHT.WPF.Readers.CoBa
+namespace BHT.Core.Readers.CoBa
 {
     public class CoBaReader : ICoBaReader
     {

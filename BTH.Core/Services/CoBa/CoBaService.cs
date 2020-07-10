@@ -1,9 +1,9 @@
-﻿using BHT.WPF.Entities;
+﻿using BHT.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace BHT.WPF.Services.CoBa
+namespace BHT.Core.Services.CoBa
 {
     public class CoBaService : ICoBaService
     {

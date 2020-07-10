@@ -1,7 +1,7 @@
-﻿using BHT.WPF.Entities;
+﻿using BHT.Core.Entities;
 using System.Threading.Tasks;
 
-namespace BHT.WPF.Readers.CoBa
+namespace BHT.Core.Readers.CoBa
 {
     public interface ICoBaReader
     {

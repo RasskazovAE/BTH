@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 
-namespace BTH.WPF.Environment
+namespace BTH.Core.Environment
 {
     public static class BTHCulture
     {
