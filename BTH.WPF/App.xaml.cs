@@ -1,7 +1,11 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using BTH.Core.ViewModels.Interfaces;
+using BTH.IoC;
+using BTH.WPF;
+using Microsoft.Extensions.Configuration;
 using MvvmCross.Core;
 using MvvmCross.Platforms.Wpf.Core;
 using MvvmCross.Platforms.Wpf.Views;
+using System;
 using System.IO;
 using System.Windows;
 
@@ -14,7 +18,14 @@ namespace BHT.WPF
     {
         protected override void RegisterSetup()
         {
+            Manager.Instance.Initialized += Container_Initialized;
             this.RegisterSetupType<MvxWpfSetup<BTH.Core.App>>();
+        }
+
+        private void Container_Initialized(object sender, EventArgs e)
+        {
+            var manager = sender as Manager;
+            manager.Container.RegisterType<IFileDialogExplorer, FileDialogExplorer>();
         }
 
         public IConfiguration Configuration { get; private set; }

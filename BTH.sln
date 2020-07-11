@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BTH.Tests", "BTH.Tests\BTH.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BTH.Core", "BTH.Core\BTH.Core.csproj", "{7B62CBE9-41B6-4468-B346-C24104F60896}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BTH.IoC", "BTH.IoC\BTH.IoC.csproj", "{0C84FB2A-68C4-4464-9608-F31C9EB61C6E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{7B62CBE9-41B6-4468-B346-C24104F60896}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B62CBE9-41B6-4468-B346-C24104F60896}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7B62CBE9-41B6-4468-B346-C24104F60896}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C84FB2A-68C4-4464-9608-F31C9EB61C6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C84FB2A-68C4-4464-9608-F31C9EB61C6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C84FB2A-68C4-4464-9608-F31C9EB61C6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C84FB2A-68C4-4464-9608-F31C9EB61C6E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

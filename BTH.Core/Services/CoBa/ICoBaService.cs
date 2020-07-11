@@ -8,6 +8,6 @@ namespace BHT.Core.Services.CoBa
     {
         Task<CoBaTransaction[]> Get();
 
-        void AddOnlyNewAsync(IEnumerable<CoBaTransaction> coBaTransactions);
+        Task AddOnlyNewAsync(IEnumerable<CoBaTransaction> coBaTransactions);
     }
 }

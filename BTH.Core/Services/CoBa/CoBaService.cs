@@ -14,7 +14,7 @@ namespace BHT.Core.Services.CoBa
             _ctx = ctx;
         }
 
-        public async void AddOnlyNewAsync(IEnumerable<CoBaTransaction> coBaTransactions)
+        public async Task AddOnlyNewAsync(IEnumerable<CoBaTransaction> coBaTransactions)
         {
             _ctx.CoBaTransactions.AddRange(coBaTransactions);
             await _ctx.SaveChangesAsync();

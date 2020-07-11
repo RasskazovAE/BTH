@@ -35,6 +35,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BTH.Core\BTH.Core.csproj" />
+    <ProjectReference Include="..\BTH.IoC\BTH.IoC.csproj" />
   </ItemGroup>
 
 </Project>
