@@ -6,6 +6,7 @@
                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                  xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
                  xmlns:views="clr-namespace:BTH.WPF.Views"
+                 xmlns:converters="clr-namespace:BTH.WPF.Converters"
                  TextElement.Foreground="{DynamicResource MaterialDesignBody}"
                  Background="{DynamicResource MaterialDesignPaper}"
                  TextElement.FontWeight="Medium"
@@ -13,12 +14,54 @@
                  FontFamily="{md:MaterialDesignFont}"
                  mc:Ignorable="d" 
                  d:DesignHeight="450" d:DesignWidth="800">
-    <StackPanel Orientation="Vertical" Margin="50 0" VerticalAlignment="Center">
-        <DockPanel LastChildFill="True">
-            <Button DockPanel.Dock="Right" Style="{DynamicResource MaterialDesignFloatingActionButton}"
-                    Command="{Binding LoadFileCommand}">
-                <md:PackIcon Kind="FileCsv"/>
+    <mvvm:MvxWpfView.Resources>
+        <converters:PositiveCurrencyConverter x:Key="PositiveCurrencyConverter"/>
+        <converters:NegativeCurrencyConverter x:Key="NegativeCurrencyConverter"/>
+    </mvvm:MvxWpfView.Resources>
+    <DockPanel Margin="10" LastChildFill="True">
+        <Grid DockPanel.Dock="Top" HorizontalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Button Margin="10"
+                    Style="{DynamicResource MaterialDesignOutlinedButton}"
+                    Command="{Binding LoadFileCommand}"
+                    Content="Load csv file...">
             </Button>
-        </DockPanel>
-    </StackPanel>
+        </Grid>
+        <DataGrid ItemsSource="{Binding Transactions}" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Buchungstag" Width="auto" Binding="{Binding BookingDate, StringFormat=\{0:dd.MM.yyyy\}}"/>
+                <DataGridTextColumn Header="Wertstellung" Width="auto" Binding="{Binding ValueDate, StringFormat=\{0:dd.MM.yyyy\}}"/>
+                <DataGridTextColumn Header="Umsatzart" Width="auto" Binding="{Binding TurnoverType}"/>
+                <DataGridTemplateColumn Header="Buchungstext" Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding BookingText}"
+                                       TextWrapping="Wrap"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="zu Lasten" Width="auto">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Amount, Converter={StaticResource NegativeCurrencyConverter}}">
+                            </TextBlock>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="zu Gunsten" Width="auto">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Amount, Converter={StaticResource PositiveCurrencyConverter}}">
+                            </TextBlock>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
 </mvvm:MvxWpfView>

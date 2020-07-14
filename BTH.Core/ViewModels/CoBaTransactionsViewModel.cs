@@ -1,4 +1,5 @@
-﻿using BHT.Core.Readers.CoBa;
+﻿using BHT.Core.Entities;
+using BHT.Core.Readers.CoBa;
 using BHT.Core.Services.CoBa;
 using BTH.Core.ViewModels.Interfaces;
 using MvvmCross.Commands;
@@ -12,6 +13,7 @@ namespace BTH.Core.ViewModels
         private readonly IFileDialogExplorer _fileDialogExplorer;
         private readonly ICoBaReader _coBaReader;
         private readonly ICoBaService _coBaService;
+        
         private ICommand _loadFileCommand;
         public ICommand LoadFileCommand
         {
@@ -19,6 +21,16 @@ namespace BTH.Core.ViewModels
             {
                 _loadFileCommand = _loadFileCommand ?? new MvxCommand(LoadFile);
                 return _loadFileCommand;
+            }
+        }
+
+        private MvxObservableCollection<CoBaTransaction> _transactions;
+        public MvxObservableCollection<CoBaTransaction> Transactions
+        {
+            get
+            {
+                _transactions = _transactions ?? new MvxObservableCollection<CoBaTransaction>();
+                return _transactions;
             }
         }
 
@@ -32,11 +44,21 @@ namespace BTH.Core.ViewModels
             _coBaService = coBaService;
         }
 
+        public override async void Start()
+        {
+            base.Start();
+
+            Transactions.AddRange(await _coBaService.Get());
+        }
+
         private async void LoadFile()
         {
             var fileName = _fileDialogExplorer.OpenFileDialog();
-            var transactions = await _coBaReader.ParseCsvFileAsync(fileName);
-            await _coBaService.AddOnlyNewAsync(transactions);
+            if (string.IsNullOrEmpty(fileName))
+            {
+                var transactions = await _coBaReader.ParseCsvFileAsync(fileName);
+                await _coBaService.AddOnlyNewAsync(transactions);
+            }
         }
     }
 }
