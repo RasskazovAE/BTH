@@ -54,7 +54,7 @@ namespace BTH.Core.ViewModels
         private async void LoadFile()
         {
             var fileName = _fileDialogExplorer.OpenFileDialog();
-            if (string.IsNullOrEmpty(fileName))
+            if (!string.IsNullOrEmpty(fileName))
             {
                 var transactions = await _coBaReader.ParseCsvFileAsync(fileName);
                 await _coBaService.AddOnlyNewAsync(transactions);
