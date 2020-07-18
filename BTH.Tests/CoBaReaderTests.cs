@@ -13,7 +13,7 @@ namespace BTH.Tests
         public new void Setup()
         {
             base.Setup();
-            Ioc.Install();
+            Ioc.InstallInterfaces();
         }
 
         [Test]

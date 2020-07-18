@@ -21,6 +21,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="TestData\data_duplicates.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="TestData\data.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

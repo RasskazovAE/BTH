@@ -32,7 +32,7 @@
                     Content="Load csv file...">
             </Button>
         </Grid>
-        <DataGrid ItemsSource="{Binding Transactions}" AutoGenerateColumns="False">
+        <DataGrid ItemsSource="{Binding Transactions}" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Buchungstag" Width="auto" Binding="{Binding BookingDate, StringFormat=\{0:dd.MM.yyyy\}}"/>
                 <DataGridTextColumn Header="Wertstellung" Width="auto" Binding="{Binding ValueDate, StringFormat=\{0:dd.MM.yyyy\}}"/>

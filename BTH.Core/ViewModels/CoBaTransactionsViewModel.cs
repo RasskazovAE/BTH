@@ -4,6 +4,8 @@ using BHT.Core.Services.CoBa;
 using BTH.Core.ViewModels.Interfaces;
 using MvvmCross.Commands;
 using MvvmCross.ViewModels;
+using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace BTH.Core.ViewModels
@@ -44,11 +46,11 @@ namespace BTH.Core.ViewModels
             _coBaService = coBaService;
         }
 
-        public override async void Start()
+        public override async void ViewAppeared()
         {
-            base.Start();
+            base.ViewAppeared();
 
-            Transactions.AddRange(await _coBaService.Get());
+            await LoadData();
         }
 
         private async void LoadFile()
@@ -57,8 +59,16 @@ namespace BTH.Core.ViewModels
             if (!string.IsNullOrEmpty(fileName))
             {
                 var transactions = await _coBaReader.ParseCsvFileAsync(fileName);
-                await _coBaService.AddOnlyNewAsync(transactions);
+                await _coBaService.AddNewAsync(transactions);
+                await LoadData();
             }
+        }
+
+        private async Task LoadData()
+        {
+            var items = await _coBaService.Get();
+            Transactions.Clear();
+            Array.ForEach(items, e => Transactions.Add(e));
         }
     }
 }

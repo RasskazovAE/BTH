@@ -9,7 +9,8 @@ namespace BTH.Core
     {
         public override void Initialize()
         {
-            Mvx.IoCProvider.Install();
+            Mvx.IoCProvider.InstallDb();
+            Mvx.IoCProvider.InstallInterfaces();
             Manager.Instance.Container = Mvx.IoCProvider;
 
             RegisterAppStart<CoBaTransactionsViewModel>();

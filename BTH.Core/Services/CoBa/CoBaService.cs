@@ -1,6 +1,9 @@
 ﻿using BHT.Core.Entities;
+using BTH.Core.Context;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BHT.Core.Services.CoBa
@@ -14,9 +17,15 @@ namespace BHT.Core.Services.CoBa
             _ctx = ctx;
         }
 
-        public async Task AddOnlyNewAsync(IEnumerable<CoBaTransaction> coBaTransactions)
+        public async Task AddNewAsync(IEnumerable<CoBaTransaction> coBaTransactions)
         {
-            _ctx.CoBaTransactions.AddRange(coBaTransactions);
+            //todo: add statistic, how many duplicated transactions were in the input data
+            coBaTransactions = coBaTransactions.GroupBy(e => e.BookingText).Select(g => g.First());
+            var transactions = await _ctx.CoBaTransactions.ToListAsync();
+            //todo: add statistic, how many transactions already exist in Db
+            var newTransactions = coBaTransactions.Where(e => transactions.All(a => a.BookingText.Equals(e.BookingText, StringComparison.InvariantCultureIgnoreCase)));
+
+            _ctx.CoBaTransactions.AddRange(newTransactions);
             await _ctx.SaveChangesAsync();
         }
 
