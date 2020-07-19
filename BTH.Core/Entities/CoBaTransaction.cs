@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BTH.Core.DbSupport;
+using System;
 
 namespace BHT.Core.Entities
 {
@@ -25,6 +26,7 @@ namespace BHT.Core.Entities
         /// <summary>
         /// Booking text
         /// </summary>
+        [Index(IsUnique = true)]
         public string BookingText { get; set; }
 
         /// <summary>

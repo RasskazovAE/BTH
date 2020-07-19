@@ -17,7 +17,7 @@ namespace BHT.Core.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.5");
 
-            modelBuilder.Entity("BHT.WPF.Entities.CoBaTransaction", b =>
+            modelBuilder.Entity("BHT.Core.Entities.CoBaTransaction", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
