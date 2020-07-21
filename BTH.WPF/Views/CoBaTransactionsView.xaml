@@ -1,4 +1,5 @@
 ﻿<mvvm:MvxWpfView x:Class="BTH.WPF.Views.CoBaTransactionsView"
+                 xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                  xmlns:mvvm="clr-namespace:MvvmCross.Platforms.Wpf.Views;assembly=MvvmCross.Platforms.Wpf"
                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -30,6 +31,37 @@
                     Style="{DynamicResource MaterialDesignOutlinedButton}"
                     Command="{Binding LoadFileCommand}"
                     Content="Load csv file...">
+            </Button>
+        </Grid >
+        <Grid DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition x:Name="StartTimeFilter"/>
+                <ColumnDefinition x:Name="EndTimeFilter"/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition x:Name="SearchTextFilter"/>
+                <ColumnDefinition x:Name="Button"/>
+            </Grid.ColumnDefinitions>
+            <DatePicker FontSize="12" Margin="5" Grid.Column ="0" Width="auto" materialDesign:HintAssist.Hint="From:"
+                        Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
+            <DatePicker FontSize="12" Margin="5" Grid.Column ="1" Width="auto" materialDesign:HintAssist.Hint="To:"
+                        Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
+            
+            <Grid Grid.Column="2" Margin="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBox  FontSize="12" VerticalAlignment="Bottom" ></TextBox>
+                <materialDesign:PackIcon Kind="Magnify" VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.Column="1"/>
+            </Grid>
+
+            <Button BorderBrush="AliceBlue" Grid.Column="3" Grid.ColumnSpan="3" HorizontalAlignment="Right"
+                    Style="{StaticResource MaterialDesignFlatButton}"
+                    Command="{Binding FilterApplyCommand}"
+                    ToolTip="MaterialDesignFlatButton">
+                Filter anwenden
             </Button>
         </Grid>
         <DataGrid ItemsSource="{Binding Transactions}" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False">
