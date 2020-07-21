@@ -9,26 +9,27 @@ namespace BTH.Tests
         [Test]
         public void DtoFilterTest()
         {
-            var eventCalled = false;
+            var propertyName = "";
             var filter = new Filter();
-            filter.PropertyChanged += (o, e) => { eventCalled = true; };
+            filter.PropertyChanged += (o, e) => { propertyName = e.PropertyName; };
             var startDate = DateTime.Now.AddYears(-1);
             var endDate = DateTime.Now;
             var searchText = "search";
 
             filter.StartDate = startDate;
-            Assert.IsTrue(eventCalled, $"{nameof(Filter.StartDate)} does not raised event.");
+            Assert.AreEqual(nameof(Filter.StartDate), propertyName, $"{nameof(Filter.StartDate)} does not raised event.");
             Assert.AreEqual(startDate, filter.StartDate, $"{nameof(Filter.StartDate)}");
 
-            eventCalled = false;
             filter.EndDate = endDate;
-            Assert.IsTrue(eventCalled, $"{nameof(Filter.EndDate)} does not raised event.");
+            Assert.AreEqual(nameof(Filter.EndDate), propertyName, $"{nameof(Filter.EndDate)} does not raised event.");
             Assert.AreEqual(endDate, filter.EndDate, $"{nameof(Filter.EndDate)}");
 
-            eventCalled = false;
             filter.SearchText = searchText;
-            Assert.IsTrue(eventCalled, $"{nameof(Filter.SearchText)} does not raised event.");
+            Assert.AreEqual(nameof(Filter.SearchText), propertyName, $"{nameof(Filter.SearchText)} does not raised event.");
             Assert.AreEqual(searchText, filter.SearchText, $"{nameof(Filter.SearchText)}");
+
+            filter.EndDate = endDate;
+            Assert.AreEqual(nameof(Filter.SearchText), propertyName, $"{nameof(Filter.EndDate)} raised event, but value was the same");
         }
     }
 }

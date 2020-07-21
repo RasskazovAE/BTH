@@ -19,8 +19,12 @@ namespace BTH.Core.Dto
         protected void Set<T>(T value, [CallerMemberName] string propertyName = "")
         {
             if (string.IsNullOrEmpty(propertyName)) return;
-            _values[propertyName] = value;
-            OnPropertyRaised(propertyName);
+            if (!_values.ContainsKey(propertyName) ||
+                _values[propertyName] != value)
+            {
+                _values[propertyName] = value;
+                OnPropertyRaised(propertyName);
+            }
         }
 
         #region INotifyPropertyChanged implementation
