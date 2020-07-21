@@ -26,6 +26,16 @@ namespace BTH.Core.ViewModels
             }
         }
 
+        private ICommand _filterApplyCommand;
+        public ICommand FilterApplyCommand
+        {
+            get
+            {
+                _filterApplyCommand = _filterApplyCommand ?? new MvxCommand(ApplyFilter);
+                return _filterApplyCommand;
+            }
+        }
+
         private MvxObservableCollection<CoBaTransaction> _transactions;
         public MvxObservableCollection<CoBaTransaction> Transactions
         {
@@ -51,6 +61,12 @@ namespace BTH.Core.ViewModels
             base.ViewAppeared();
 
             await LoadData();
+        }
+
+        private async void ApplyFilter()
+        {
+            //todo applying filter
+            return;
         }
 
         private async void LoadFile()
