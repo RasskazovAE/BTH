@@ -66,7 +66,6 @@ namespace BTH.Core.ViewModels
         private async void ApplyFilter()
         {
             //todo applying filter
-            return;
         }
 
         private async void LoadFile()

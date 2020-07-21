@@ -1,5 +1,4 @@
 ﻿<mvvm:MvxWpfView x:Class="BTH.WPF.Views.CoBaTransactionsView"
-                 xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                  xmlns:mvvm="clr-namespace:MvvmCross.Platforms.Wpf.Views;assembly=MvvmCross.Platforms.Wpf"
                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -30,38 +29,36 @@
             <Button Margin="10"
                     Style="{DynamicResource MaterialDesignOutlinedButton}"
                     Command="{Binding LoadFileCommand}"
-                    Content="Load csv file...">
+                    Content="Datei laden...">
             </Button>
         </Grid >
-        <Grid DockPanel.Dock="Top">
+        <Grid DockPanel.Dock="Top" Grid.IsSharedSizeScope="True">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition x:Name="StartTimeFilter"/>
-                <ColumnDefinition x:Name="EndTimeFilter"/>
+                <ColumnDefinition SharedSizeGroup="DateGroup" Width="125"/>
+                <ColumnDefinition SharedSizeGroup="DateGroup"/>
                 <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition x:Name="SearchTextFilter"/>
-                <ColumnDefinition x:Name="Button"/>
+                <ColumnDefinition Width="150"/>
             </Grid.ColumnDefinitions>
-            <DatePicker FontSize="12" Margin="5" Grid.Column ="0" Width="auto" materialDesign:HintAssist.Hint="From:"
-                        Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
-            <DatePicker FontSize="12" Margin="5" Grid.Column ="1" Width="auto" materialDesign:HintAssist.Hint="To:"
-                        Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
-            
-            <Grid Grid.Column="2" Margin="5">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
 
-                <TextBox  FontSize="12" VerticalAlignment="Bottom" ></TextBox>
-                <materialDesign:PackIcon Kind="Magnify" VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.Column="1"/>
+            <DatePicker x:Name="StartDate" Grid.Column="0" md:HintAssist.Hint="Von:"/>
+
+            <DatePicker Grid.Column="1" md:HintAssist.Hint="Bis:"/>
+
+            <Grid Grid.Column="2" Margin="50 0 50 0" VerticalAlignment="Bottom">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <md:PackIcon Grid.Column="0" Kind="Search" VerticalAlignment="Center"
+                             Foreground="{Binding ElementName=SearchTextBox, Path=BorderBrush}" />
+                <TextBox Grid.Column="1" x:Name="SearchTextBox"
+                         VerticalAlignment="Center" md:HintAssist.Hint="Suchen..."></TextBox>
             </Grid>
 
-            <Button BorderBrush="AliceBlue" Grid.Column="3" Grid.ColumnSpan="3" HorizontalAlignment="Right"
+            <Button Grid.Column="3" VerticalAlignment="Bottom"
                     Style="{StaticResource MaterialDesignFlatButton}"
                     Command="{Binding FilterApplyCommand}"
-                    ToolTip="MaterialDesignFlatButton">
-                Filter anwenden
+                    Content="Filter anwenden">
             </Button>
         </Grid>
         <DataGrid ItemsSource="{Binding Transactions}" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False">
