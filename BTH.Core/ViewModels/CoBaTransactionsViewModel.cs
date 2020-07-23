@@ -1,6 +1,7 @@
 ﻿using BHT.Core.Entities;
 using BHT.Core.Readers.CoBa;
 using BHT.Core.Services.CoBa;
+using BTH.Core.Dto;
 using BTH.Core.ViewModels.Interfaces;
 using MvvmCross.Commands;
 using MvvmCross.ViewModels;
@@ -15,7 +16,17 @@ namespace BTH.Core.ViewModels
         private readonly IFileDialogExplorer _fileDialogExplorer;
         private readonly ICoBaReader _coBaReader;
         private readonly ICoBaService _coBaService;
-        
+
+        private Filter _filter;
+        public Filter Filter
+        {
+            get
+            {
+                _filter = _filter ?? new Filter() { EndDate = DateTime.Now };
+                return _filter;
+            }
+        }
+
         private ICommand _loadFileCommand;
         public ICommand LoadFileCommand
         {
@@ -65,7 +76,8 @@ namespace BTH.Core.ViewModels
 
         private async void ApplyFilter()
         {
-            //todo applying filter
+            //todo validate filter
+            await LoadData();
         }
 
         private async void LoadFile()
@@ -81,7 +93,8 @@ namespace BTH.Core.ViewModels
 
         private async Task LoadData()
         {
-            var items = await _coBaService.Get();
+            // todo разобраться с передаваемым фильтром
+            var items = await _coBaService.Get(Filter);
             Transactions.Clear();
             Array.ForEach(items, e => Transactions.Add(e));
         }

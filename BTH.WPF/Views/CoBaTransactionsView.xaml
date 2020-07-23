@@ -40,9 +40,9 @@
                 <ColumnDefinition Width="150"/>
             </Grid.ColumnDefinitions>
 
-            <DatePicker x:Name="StartDate" Grid.Column="0" md:HintAssist.Hint="Von:"/>
+            <DatePicker SelectedDate="{Binding Path=Filter.StartDate}" x:Name="StartDate" Grid.Column="0" md:HintAssist.Hint="Von:"/>
 
-            <DatePicker Grid.Column="1" md:HintAssist.Hint="Bis:"/>
+            <DatePicker SelectedDate="{Binding Path=Filter.EndDate}" Grid.Column="1" md:HintAssist.Hint="Bis:"/>
 
             <Grid Grid.Column="2" Margin="50 0 50 0" VerticalAlignment="Bottom">
                 <Grid.ColumnDefinitions>
@@ -51,7 +51,7 @@
                 </Grid.ColumnDefinitions>
                 <md:PackIcon Grid.Column="0" Kind="Search" VerticalAlignment="Center"
                              Foreground="{Binding ElementName=SearchTextBox, Path=BorderBrush}" />
-                <TextBox Grid.Column="1" x:Name="SearchTextBox"
+                <TextBox Text="{Binding Path=Filter.SearchText}" Grid.Column="1" x:Name="SearchTextBox"
                          VerticalAlignment="Center" md:HintAssist.Hint="Suchen..."></TextBox>
             </Grid>
 

@@ -3,6 +3,7 @@ using BHT.Core.Readers.CoBa;
 using BHT.Core.Services.CoBa;
 using BTH.Core;
 using BTH.Core.Context;
+using BTH.Core.Dto;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using System;
@@ -25,8 +26,9 @@ namespace BTH.Tests
         [Test]
         public async Task LoadFileTwice_NoDuplicatesAdded()
         {
+            var filter = new Filter() { EndDate = DateTime.Now};
             var coBaService = Ioc.Resolve<ICoBaService>();
-            var result = await coBaService.Get();
+            var result = await coBaService.Get(filter);
             Assert.AreEqual(0, result.Count());
 
             var filePath = Path.Combine(Directory.GetCurrentDirectory(), "testdata\\data.csv");
@@ -35,7 +37,7 @@ namespace BTH.Tests
             var coBaTransactions = await reader.ParseCsvFileAsync(filePath);
 
             await coBaService.AddNewAsync(coBaTransactions);
-            result = await coBaService.Get();
+            result = await coBaService.Get(filter);
 
             Assert.NotNull(result);
             Assert.AreEqual(7, result.Count());
@@ -44,7 +46,7 @@ namespace BTH.Tests
             Assert.IsTrue(result.All(e => e.ClientAccount.Equals("123456700")));
 
             await coBaService.AddNewAsync(coBaTransactions);
-            result = await coBaService.Get();
+            result = await coBaService.Get(filter);
 
             Assert.NotNull(result);
             Assert.AreEqual(7, result.Count());
@@ -56,8 +58,9 @@ namespace BTH.Tests
         [Test]
         public async Task LoadFileWithDuplicates_NoDuplicatesAdded()
         {
+            var filter = new Filter() { EndDate = DateTime.Now };
             var coBaService = Ioc.Resolve<ICoBaService>();
-            var result = await coBaService.Get();
+            var result = await coBaService.Get(filter);
             Assert.AreEqual(0, result.Count());
 
             var filePath = Path.Combine(Directory.GetCurrentDirectory(), "testdata\\data_duplicates.csv");
@@ -66,7 +69,7 @@ namespace BTH.Tests
             var coBaTransactions = await reader.ParseCsvFileAsync(filePath);
 
             await coBaService.AddNewAsync(coBaTransactions);
-            result = await coBaService.Get();
+            result = await coBaService.Get(filter);
 
             Assert.NotNull(result);
             Assert.AreEqual(7, result.Count());
