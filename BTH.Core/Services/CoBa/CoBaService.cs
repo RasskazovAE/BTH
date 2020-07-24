@@ -1,6 +1,7 @@
 ﻿using BHT.Core.Entities;
 using BTH.Core.Context;
 using BTH.Core.Dto;
+using BTH.Core.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -32,10 +33,7 @@ namespace BHT.Core.Services.CoBa
 
         public async Task<CoBaTransaction[]> Get(Filter filter)
         {
-            return await _ctx.CoBaTransactions.Where(e => 
-                e.BookingDate > filter.StartDate && 
-                e.BookingDate < filter.EndDate && 
-                (string.IsNullOrEmpty(filter.SearchText) || e.BookingText.Contains(filter.SearchText)))
+            return await _ctx.CoBaTransactions.ApplyFilter(filter)
                 .ToArrayAsync();
         }
     }

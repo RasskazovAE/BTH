@@ -22,7 +22,7 @@ namespace BTH.Core.ViewModels
         {
             get
             {
-                _filter = _filter ?? new Filter() { EndDate = DateTime.Now };
+                _filter = _filter ?? new Filter();
                 return _filter;
             }
         }
