@@ -6,13 +6,13 @@ namespace BTH.Core.Dto
     {
         public DateTime? StartDate
         {
-            get => Get<DateTime>();
+            get => Get<DateTime?>();
             set => Set(value);
         }
 
         public DateTime? EndDate
         {
-            get => Get<DateTime>();
+            get => Get<DateTime?>();
             set => Set(value);
         }
 
