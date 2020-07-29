@@ -1,5 +1,4 @@
-﻿using BTH.Core.ViewModels.Interfaces;
-using BTH.IoC;
+﻿using BTH.IoC;
 using BTH.WPF;
 using Microsoft.Extensions.Configuration;
 using MvvmCross.Core;
@@ -16,19 +15,13 @@ namespace BHT.WPF
     /// </summary>
     public partial class App : MvxApplication
     {
+        public IConfiguration Configuration { get; private set; }
+
         protected override void RegisterSetup()
         {
             Manager.Instance.Initialized += Container_Initialized;
             this.RegisterSetupType<MvxWpfSetup<BTH.Core.App>>();
         }
-
-        private void Container_Initialized(object sender, EventArgs e)
-        {
-            var manager = sender as Manager;
-            manager.Container.RegisterType<IFileDialogExplorer, FileDialogExplorer>();
-        }
-
-        public IConfiguration Configuration { get; private set; }
 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -37,6 +30,12 @@ namespace BHT.WPF
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
             Configuration = builder.Build();
+        }
+
+        private void Container_Initialized(object sender, EventArgs e)
+        {
+            var manager = sender as Manager;
+            manager.Container.Install();
         }
     }
 }

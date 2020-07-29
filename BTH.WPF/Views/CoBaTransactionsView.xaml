@@ -39,13 +39,14 @@
                 <ColumnDefinition SharedSizeGroup="DateGroup"/>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
 
             <DatePicker x:Name="StartDate" Grid.Column="0" md:HintAssist.Hint="Von:">
                 <DatePicker.Resources>
                     <validation:BindingProxy x:Key="proxy" Data="{Binding}"/>
                 </DatePicker.Resources>
-                
+
                 <DatePicker.SelectedDate>
                     <Binding Path="Filter.StartDate" UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
@@ -58,7 +59,7 @@
                     </Binding>
                 </DatePicker.SelectedDate>
             </DatePicker>
-
+            
             <DatePicker x:Name="EndDate" Grid.Column="1" md:HintAssist.Hint="Bis:">
                 <DatePicker.Resources>
                     <validation:BindingProxy x:Key="proxy" Data="{Binding}"/>
@@ -93,6 +94,13 @@
                     Command="{Binding FilterApplyCommand}"
                     Content="Filter anwenden">
             </Button>
+
+            <Button Grid.Column="4" VerticalAlignment="Bottom"
+                    Width="35" Padding="0" Margin="10 0 0 0"
+                    Style="{StaticResource MaterialDesignFlatButton}"
+                    Content="{md:PackIcon Kind=Printer}"
+                    Command="{Binding PrintCommand}"
+                    ToolTip="Druckvorschau" />
         </Grid>
         <DataGrid ItemsSource="{Binding Transactions}" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False">
             <DataGrid.Columns>

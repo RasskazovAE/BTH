@@ -1,7 +1,7 @@
 ﻿using BTH.Core.ViewModels.Interfaces;
 using Microsoft.Win32;
 
-namespace BTH.WPF
+namespace BTH.WPF.Services
 {
     public class FileDialogExplorer : IFileDialogExplorer
     {

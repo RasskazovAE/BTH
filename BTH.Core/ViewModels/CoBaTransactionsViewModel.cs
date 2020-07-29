@@ -14,6 +14,7 @@ namespace BTH.Core.ViewModels
     public class CoBaTransactionsViewModel : MvxViewModel
     {
         private readonly IFileDialogExplorer _fileDialogExplorer;
+        private readonly IPrintService _printService;
         private readonly ICoBaReader _coBaReader;
         private readonly ICoBaService _coBaService;
 
@@ -34,6 +35,16 @@ namespace BTH.Core.ViewModels
             {
                 _loadFileCommand = _loadFileCommand ?? new MvxCommand(LoadFile);
                 return _loadFileCommand;
+            }
+        }
+
+        private ICommand _printCommend;
+        public ICommand PrintCommand
+        {
+            get
+            {
+                _printCommend = _printCommend ?? new MvxCommand(Print);
+                return _printCommend;
             }
         }
 
@@ -59,10 +70,12 @@ namespace BTH.Core.ViewModels
 
         public CoBaTransactionsViewModel(
             IFileDialogExplorer fileDialogExplorer,
+            IPrintService printService,
             ICoBaReader coBaReader,
             ICoBaService coBaService)
         {
             _fileDialogExplorer = fileDialogExplorer;
+            _printService = printService;
             _coBaReader = coBaReader;
             _coBaService = coBaService;
         }
@@ -97,6 +110,11 @@ namespace BTH.Core.ViewModels
             var items = await _coBaService.Get(Filter);
             Transactions.Clear();
             Array.ForEach(items, e => Transactions.Add(e));
+        }
+
+        private void Print()
+        {
+            _printService.Print();
         }
     }
 }
