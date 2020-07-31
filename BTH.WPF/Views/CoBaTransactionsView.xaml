@@ -6,7 +6,6 @@
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                  xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
-                 xmlns:views="clr-namespace:BTH.WPF.Views"
                  xmlns:converters="clr-namespace:BTH.WPF.Converters"
                  TextElement.Foreground="{DynamicResource MaterialDesignBody}"
                  Background="{DynamicResource MaterialDesignPaper}"
@@ -42,39 +41,17 @@
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
 
-            <DatePicker x:Name="StartDate" Grid.Column="0" md:HintAssist.Hint="Von:">
-                <DatePicker.Resources>
-                    <validation:BindingProxy x:Key="proxy" Data="{Binding}"/>
-                </DatePicker.Resources>
-
+            <DatePicker x:Name="StartDate" Grid.Column="0" md:HintAssist.Hint="Von:"
+                        validation:AttachedProperties.RegisterEndDate="{Binding Filter.EndDate}">
                 <DatePicker.SelectedDate>
-                    <Binding Path="Filter.StartDate" UpdateSourceTrigger="PropertyChanged">
-                        <Binding.ValidationRules>
-                            <validation:StartDateValidationRule ValidatesOnTargetUpdated="False">
-                                <validation:StartDateValidationRule.FilterWrapper>
-                                    <validation:FilterWrapper Filter="{Binding Data.Filter, Source={StaticResource proxy}}"/>
-                                </validation:StartDateValidationRule.FilterWrapper>
-                            </validation:StartDateValidationRule>
-                        </Binding.ValidationRules>
-                    </Binding>
+                    <Binding Path="Filter.StartDate" UpdateSourceTrigger="PropertyChanged"/>
                 </DatePicker.SelectedDate>
             </DatePicker>
-            
-            <DatePicker x:Name="EndDate" Grid.Column="1" md:HintAssist.Hint="Bis:">
-                <DatePicker.Resources>
-                    <validation:BindingProxy x:Key="proxy" Data="{Binding}"/>
-                </DatePicker.Resources>
 
+            <DatePicker x:Name="EndDate" Grid.Column="1" md:HintAssist.Hint="Bis:"
+                        validation:AttachedProperties.RegisterStartDate="{Binding Filter.StartDate}">
                 <DatePicker.SelectedDate>
-                    <Binding Path="Filter.EndDate" UpdateSourceTrigger="PropertyChanged">
-                        <Binding.ValidationRules>
-                            <validation:EndDateValidationRule ValidatesOnTargetUpdated="False">
-                                <validation:EndDateValidationRule.FilterWrapper>
-                                    <validation:FilterWrapper Filter="{Binding Data.Filter, Source={StaticResource proxy}}"/>
-                                </validation:EndDateValidationRule.FilterWrapper>
-                            </validation:EndDateValidationRule>
-                        </Binding.ValidationRules>
-                    </Binding>
+                    <Binding Path="Filter.EndDate" UpdateSourceTrigger="PropertyChanged"/>
                 </DatePicker.SelectedDate>
             </DatePicker>
 

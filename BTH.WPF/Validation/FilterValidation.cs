@@ -8,74 +8,64 @@ using System.Windows.Controls;
 
 namespace BTH.WPF.Validation
 {
-    public class EndDateValidationRule : ValidationRule
+    public class AttachedProperties : DependencyObject
     {
-        public FilterWrapper FilterWrapper { get; set; }
-        public override ValidationResult Validate(object value, CultureInfo cultureInfo)
+        #region RegisterBlackoutDates
+
+        public static DependencyProperty RegisterStartDateProperty = DependencyProperty.RegisterAttached("RegisterStartDate", typeof(DateTime?), typeof(AttachedProperties), new PropertyMetadata(null, OnRegisterStartDateCommandBindingChanged));
+        public static DependencyProperty RegisterEndDateProperty = DependencyProperty.RegisterAttached("RegisterEndDate", typeof(DateTime?), typeof(AttachedProperties), new PropertyMetadata(null, OnRegisterEndDateCommandBindingChanged));
+
+        public static void SetRegisterStartDate(UIElement element, DateTime? value)
         {
-            DateTime? date = (DateTime?)value;
-            if (FilterWrapper.Filter.StartDate != null)
-                return new ValidationResult(date >= FilterWrapper.Filter.StartDate, "");
-
-            return ValidationResult.ValidResult;
-        }
-    }
-    public class StartDateValidationRule : ValidationRule
-    {
-        public FilterWrapper FilterWrapper { get; set; }
-        public override ValidationResult Validate(object value, CultureInfo cultureInfo)
-        {
-            DateTime? date = (DateTime?)value;
-
-            if (FilterWrapper.Filter.EndDate != null)
-                return new ValidationResult(date <= FilterWrapper.Filter.EndDate, "");
-
-            return ValidationResult.ValidResult;
-        }
-    }
-
-
-    public class FilterWrapper : DependencyObject
-    {
-        public static readonly DependencyProperty StartDateProperty = DependencyProperty.Register(
-            "Filter",
-            typeof(Filter),
-            typeof(FilterWrapper),
-            new PropertyMetadata(default(object)));
-
-        public Filter Filter
-        {
-            get
-            {
-                return (Filter)GetValue(StartDateProperty);
-            }
-            set
-            {
-                SetValue(StartDateProperty, value);
-            }
-        }
-    }
-
-    public class BindingProxy : Freezable
-    {
-        protected override Freezable CreateInstanceCore()
-        {
-            return new BindingProxy();
+            if (element != null)
+                element.SetValue(RegisterStartDateProperty, value);
         }
 
-        public object Data
+        public static void SetRegisterEndDate(UIElement element, DateTime? value)
         {
-            get
+            if (element != null)
+                element.SetValue(RegisterEndDateProperty, value);
+        }
+
+        public static DateTime? GetRegisterStartDate(UIElement element)
+        {
+            return (element != null ? (DateTime?)element.GetValue(RegisterStartDateProperty) : null);
+        }
+
+        public static DateTime? GetRegisterEndDate(UIElement element)
+        {
+            return (element != null ? (DateTime?)element.GetValue(RegisterEndDateProperty) : null);
+        }
+
+        private static void OnRegisterStartDateCommandBindingChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        {
+            System.Windows.Controls.DatePicker element = sender as System.Windows.Controls.DatePicker;
+            if (element != null)
             {
-                return (object)GetValue(DataProperty);
-            }
-            set
-            {
-                SetValue(DataProperty, value);
+                DateTime? binding = e.NewValue as DateTime?;
+                if (binding != null)
+                {
+                    var date = (DateTime)binding;
+                    element.BlackoutDates.Clear();
+                    element.BlackoutDates.Add(new CalendarDateRange(DateTime.MinValue.Date, date.Date));
+                }
             }
         }
 
-        public static readonly DependencyProperty DataProperty =
-            DependencyProperty.Register("Data", typeof(object), typeof(BindingProxy), new PropertyMetadata(null));
+        private static void OnRegisterEndDateCommandBindingChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        {
+            System.Windows.Controls.DatePicker element = sender as System.Windows.Controls.DatePicker;
+            if (element != null)
+            {
+                DateTime? binding = e.NewValue as DateTime?;
+                if (binding != null)
+                {
+                    var date = (DateTime)binding;
+                    element.BlackoutDates.Clear();
+                    element.BlackoutDates.Add(new CalendarDateRange(date.Date, DateTime.MaxValue.Date));
+                }
+            }
+        }
+        #endregion
     }
 }
