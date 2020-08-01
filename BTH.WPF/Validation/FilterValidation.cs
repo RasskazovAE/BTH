@@ -1,8 +1,4 @@
-﻿using BTH.Core.Dto;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Text;
+﻿using System;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -29,17 +25,17 @@ namespace BTH.WPF.Validation
 
         public static DateTime? GetRegisterStartDate(UIElement element)
         {
-            return (element != null ? (DateTime?)element.GetValue(RegisterStartDateProperty) : null);
+            return element != null ? (DateTime?)element.GetValue(RegisterStartDateProperty) : null;
         }
 
         public static DateTime? GetRegisterEndDate(UIElement element)
         {
-            return (element != null ? (DateTime?)element.GetValue(RegisterEndDateProperty) : null);
+            return element != null ? (DateTime?)element.GetValue(RegisterEndDateProperty) : null;
         }
 
         private static void OnRegisterStartDateCommandBindingChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            System.Windows.Controls.DatePicker element = sender as System.Windows.Controls.DatePicker;
+            DatePicker element = sender as DatePicker;
             if (element != null)
             {
                 DateTime? binding = e.NewValue as DateTime?;
@@ -54,7 +50,7 @@ namespace BTH.WPF.Validation
 
         private static void OnRegisterEndDateCommandBindingChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            System.Windows.Controls.DatePicker element = sender as System.Windows.Controls.DatePicker;
+            DatePicker element = sender as DatePicker;
             if (element != null)
             {
                 DateTime? binding = e.NewValue as DateTime?;

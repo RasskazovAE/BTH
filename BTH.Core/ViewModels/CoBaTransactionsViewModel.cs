@@ -6,6 +6,7 @@ using BTH.Core.ViewModels.Interfaces;
 using MvvmCross.Commands;
 using MvvmCross.ViewModels;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -114,7 +115,7 @@ namespace BTH.Core.ViewModels
 
         private void Print()
         {
-            _printService.Print();
+            _printService.Print(Transactions.ToArray());
         }
     }
 }

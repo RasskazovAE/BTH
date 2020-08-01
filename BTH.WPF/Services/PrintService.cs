@@ -1,4 +1,5 @@
-﻿using BTH.Core.ViewModels.Interfaces;
+﻿using BHT.Core.Entities;
+using BTH.Core.ViewModels.Interfaces;
 using BTH.WPF.Printing;
 using System.Windows;
 using System.Windows.Documents;
@@ -7,7 +8,7 @@ namespace BTH.WPF.Services
 {
     public class PrintService : IPrintService
     {
-        public void Print()
+        public void Print(CoBaTransaction[] transactions)
         {
             var printPreview = new PrintPreview();
             printPreview.Owner = Application.Current.MainWindow;

@@ -1,7 +1,9 @@
-﻿namespace BTH.Core.ViewModels.Interfaces
+﻿using BHT.Core.Entities;
+
+namespace BTH.Core.ViewModels.Interfaces
 {
     public interface IPrintService
     {
-        void Print();
+        void Print(CoBaTransaction[] transactions);
     }
 }
