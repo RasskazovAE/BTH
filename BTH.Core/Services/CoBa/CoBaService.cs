@@ -33,7 +33,9 @@ namespace BHT.Core.Services.CoBa
 
         public async Task<CoBaTransaction[]> Get(Filter filter)
         {
-            return await _ctx.CoBaTransactions.ApplyFilter(filter)
+            return await _ctx.CoBaTransactions
+                .ApplyFilter(filter)
+                .OrderByDescending(e => e.BookingDate)
                 .ToArrayAsync();
         }
     }

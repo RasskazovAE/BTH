@@ -6,13 +6,7 @@
         xmlns:local="clr-namespace:BTH.WPF.Printing"
         mc:Ignorable="d"
         Title="PrintPreview" Height="595" Width="400">
-    <DockPanel LastChildFill="True">
-        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right"
-                    Margin="10">
-            <Button Content="Drucken" Margin="0 0 10 0" Style="{StaticResource MaterialDesignFlatButton}" Click="Print_Click"/>
-            <Button Content="Abbrechen" Style="{StaticResource MaterialDesignFlatButton}" Click="Cancel_Click"/>
-        </StackPanel>
-        <FlowDocumentPageViewer Name="Viewer" Document="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=Document}"
-                                BorderBrush="Gray" BorderThickness="1"/>
-    </DockPanel>
+    <Grid>
+        <DocumentViewer Name="Viewer" BorderBrush="Gray" BorderThickness="1" />
+    </Grid>
 </Window>
