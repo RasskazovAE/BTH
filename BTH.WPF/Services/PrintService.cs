@@ -35,6 +35,7 @@ namespace BTH.WPF.Services
                     var printPreview = new PrintPreview();
                     printPreview.Owner = Application.Current.MainWindow;
                     printPreview.Viewer.Document = xpsDocument.GetFixedDocumentSequence();
+                    printPreview.Viewer.FitToWidth();
                     printPreview.Show();
                 }
             }

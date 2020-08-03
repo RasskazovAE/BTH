@@ -1,12 +1,25 @@
-﻿<Window x:Class="BTH.WPF.Printing.PrintPreview"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:BTH.WPF.Printing"
-        mc:Ignorable="d"
-        Title="PrintPreview" Height="595" Width="400">
+﻿<views:MvxWindow x:Class="BTH.WPF.Printing.PrintPreview"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:views="clr-namespace:MvvmCross.Platforms.Wpf.Views;assembly=MvvmCross.Platforms.Wpf"
+                 xmlns:local="clr-namespace:BTH.WPF.Printing"
+                 mc:Ignorable="d"
+                 Title="PrintPreview" Height="600" Width="400">
     <Grid>
-        <DocumentViewer Name="Viewer" BorderBrush="Gray" BorderThickness="1" />
+        <DocumentViewer Name="Viewer" BorderBrush="Gray" BorderThickness="1">
+            <DocumentViewer.Resources>
+                <!-- Hides the search box-->
+                <Style TargetType="ContentControl">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                </Style>
+
+                <!-- Hides the toolbar -->
+                <Style TargetType="ToolBar">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                </Style>
+            </DocumentViewer.Resources>
+        </DocumentViewer>
     </Grid>
-</Window>
+</views:MvxWindow>
