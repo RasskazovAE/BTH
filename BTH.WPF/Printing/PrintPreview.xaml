@@ -3,12 +3,23 @@
                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
                  xmlns:views="clr-namespace:MvvmCross.Platforms.Wpf.Views;assembly=MvvmCross.Platforms.Wpf"
                  xmlns:local="clr-namespace:BTH.WPF.Printing"
+                 TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+                 Background="{DynamicResource MaterialDesignPaper}"
+                 TextElement.FontWeight="Medium"
+                 TextElement.FontSize="14"
+                 FontFamily="{md:MaterialDesignFont}"
                  mc:Ignorable="d"
-                 Title="PrintPreview" Height="600" Width="400">
+                 Title="PrintPreview" Height="600" Width="800">
     <Grid>
-        <DocumentViewer Name="Viewer" BorderBrush="Gray" BorderThickness="1">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="auto"/>
+        </Grid.ColumnDefinitions>
+        <DocumentViewer Grid.Column="0" Name="Viewer" BorderBrush="Gray" BorderThickness="1"
+                        Document="{Binding Path=Document}">
             <DocumentViewer.Resources>
                 <!-- Hides the search box-->
                 <Style TargetType="ContentControl">
@@ -21,5 +32,21 @@
                 </Style>
             </DocumentViewer.Resources>
         </DocumentViewer>
+        <DockPanel Grid.Column="1" LastChildFill="True">
+            <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal"
+                        HorizontalAlignment="Right" Margin="10">
+                <Button Content="Drucken" Margin="0 0 10 0" Style="{StaticResource MaterialDesignFlatButton}"
+                        Command="{Binding Path=PrintCommand}"/>
+                <Button Content="Abbrechen" Style="{StaticResource MaterialDesignFlatButton}"
+                        Command="{Binding Path=CancelCommand}"/>
+            </StackPanel>
+            <StackPanel Grid.Column="1">
+                <ComboBox md:HintAssist.Hint="Ein Drucker auswählen" Margin="10 30 10 10"
+                          ItemsSource="{Binding Path=PrintQueues}"
+                          SelectedValue="{Binding Path=SelectedPrintQueue}"
+                          DisplayMemberPath="Name">
+                </ComboBox>
+            </StackPanel>
+        </DockPanel>
     </Grid>
 </views:MvxWindow>
