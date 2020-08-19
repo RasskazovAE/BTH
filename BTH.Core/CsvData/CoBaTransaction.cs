@@ -1,14 +1,11 @@
-﻿using BTH.Core.DbSupport;
-using BTH.Core.Entities;
-using System;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
 
-namespace BHT.Core.Entities
+namespace BTH.Core.CsvData
 {
     /// <summary>
     /// Transaction for commerzbank
     /// </summary>
-    public class CoBaTransaction : EntityBase
+    public class CoBaTransactionCsv
     {
         /// <summary>
         /// Booking date
@@ -28,7 +25,6 @@ namespace BHT.Core.Entities
         /// <summary>
         /// Booking text
         /// </summary>
-        [Index(IsUnique = true)]
         public string BookingText { get; set; }
 
         /// <summary>
@@ -42,19 +38,23 @@ namespace BHT.Core.Entities
         public string Currency { get; set; }
 
         /// <summary>
+        /// Client account
+        /// </summary>
+        public string ClientAccount { get; set; }
+
+        /// <summary>
+        /// BIC of client account
+        /// </summary>
+        public string BIC { get; set; }
+
+        /// <summary>
+        /// IBAN of client account
+        /// </summary>
+        public string IBAN { get; set; }
+
+        /// <summary>
         /// Category
         /// </summary>
         public string Category { get; set; }
-
-        /// <summary>
-        /// User account key property
-        /// </summary>
-        [ForeignKey(nameof(UserAccount))]
-        public long UserAccountId { get; set; }
-
-        /// <summary>
-        /// User account
-        /// </summary>
-        public CoBaUser UserAccount { get; set; }
     }
 }

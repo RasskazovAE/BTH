@@ -1,5 +1,6 @@
 ﻿using BHT.Core.Entities;
 using BTH.Core.DbSupport;
+using BTH.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
@@ -8,6 +9,8 @@ namespace BTH.Core.Context
     public class DataContext : DbContext
     {
         public DbSet<CoBaTransaction> CoBaTransactions { get; set; }
+
+        public DbSet<CoBaUser> CoBaUsers { get; set; }
 
         public DataContext()
             : this(new DbContextOptionsBuilder()

@@ -1,6 +1,8 @@
 ﻿using BHT.Core.Entities;
 using BTH.Core.Context;
+using BTH.Core.CsvData;
 using BTH.Core.Dto;
+using BTH.Core.Entities;
 using BTH.Core.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -17,6 +19,40 @@ namespace BHT.Core.Services.CoBa
         public CoBaService(DataContext ctx)
         {
             _ctx = ctx;
+        }
+
+        public async Task<IList<CoBaTransaction>> GroupTransactions(IList<CoBaTransactionCsv> coBaTransactionsCsv)
+        {
+            var transactions = new List<CoBaTransaction>();
+            var transGroup = coBaTransactionsCsv.GroupBy(e => new { e.IBAN, e.BIC, e.ClientAccount }).ToList();
+
+            foreach (var gr in transGroup)
+            {
+                var user = await _ctx.CoBaUsers.FirstOrDefaultAsync(e => e.IBAN.ToLower() == gr.Key.IBAN.ToLower()); ;
+                if (user == null)
+                {
+                    user = new CoBaUser
+                    {
+                        ClientAccount = gr.Key.ClientAccount,
+                        BIC = gr.Key.BIC,
+                        IBAN = gr.Key.IBAN
+                    };
+                    await _ctx.CoBaUsers.AddAsync(user);
+                }
+                transactions.AddRange(gr.Select(e => new CoBaTransaction
+                {
+                    Amount = e.Amount,
+                    BookingDate = e.BookingDate,
+                    BookingText = e.BookingText,
+                    Category = e.Category,
+                    Currency = e.Currency,
+                    TurnoverType = e.TurnoverType,
+                    ValueDate = e.ValueDate,
+                    UserAccountId = user.Id,
+                    UserAccount = user
+                }));
+            }
+            return transactions;
         }
 
         public async Task AddNewAsync(IEnumerable<CoBaTransaction> coBaTransactions)

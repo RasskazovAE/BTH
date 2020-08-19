@@ -4,6 +4,7 @@ using BHT.Core.Services.CoBa;
 using BTH.Core;
 using BTH.Core.Context;
 using BTH.Core.Dto;
+using BTH.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using System;
@@ -34,25 +35,26 @@ namespace BTH.Tests
             var filePath = Path.Combine(Directory.GetCurrentDirectory(), "testdata\\data.csv");
 
             var reader = Ioc.Resolve<ICoBaReader>();
-            var coBaTransactions = await reader.ParseCsvFileAsync(filePath);
+            var coBaTransactionsCsv = await reader.ParseCsvFileAsync(filePath);
+            var coBaTransactions = await coBaService.GroupTransactions(coBaTransactionsCsv);
 
             await coBaService.AddNewAsync(coBaTransactions);
             result = await coBaService.Get(filter);
 
             Assert.NotNull(result);
             Assert.AreEqual(7, result.Count());
-            Assert.IsTrue(result.All(e => e.IBAN.Equals("DE64642525252525646425")));
-            Assert.IsTrue(result.All(e => e.BIC.Equals("25252525")));
-            Assert.IsTrue(result.All(e => e.ClientAccount.Equals("123456700")));
+            Assert.IsTrue(result.All(e => e.UserAccount.IBAN.Equals("DE64642525252525646425")));
+            Assert.IsTrue(result.All(e => e.UserAccount.BIC.Equals("25252525")));
+            Assert.IsTrue(result.All(e => e.UserAccount.ClientAccount.Equals("123456700")));
 
             await coBaService.AddNewAsync(coBaTransactions);
             result = await coBaService.Get(filter);
 
             Assert.NotNull(result);
             Assert.AreEqual(7, result.Count());
-            Assert.IsTrue(result.All(e => e.IBAN.Equals("DE64642525252525646425")));
-            Assert.IsTrue(result.All(e => e.BIC.Equals("25252525")));
-            Assert.IsTrue(result.All(e => e.ClientAccount.Equals("123456700")));
+            Assert.IsTrue(result.All(e => e.UserAccount.IBAN.Equals("DE64642525252525646425")));
+            Assert.IsTrue(result.All(e => e.UserAccount.BIC.Equals("25252525")));
+            Assert.IsTrue(result.All(e => e.UserAccount.ClientAccount.Equals("123456700")));
         }
 
         [Test]
@@ -66,22 +68,32 @@ namespace BTH.Tests
             var filePath = Path.Combine(Directory.GetCurrentDirectory(), "testdata\\data_duplicates.csv");
 
             var reader = Ioc.Resolve<ICoBaReader>();
-            var coBaTransactions = await reader.ParseCsvFileAsync(filePath);
+            var coBaTransactionsCsv = await reader.ParseCsvFileAsync(filePath);
+            var coBaTransactions = await coBaService.GroupTransactions(coBaTransactionsCsv);
 
             await coBaService.AddNewAsync(coBaTransactions);
             result = await coBaService.Get(filter);
 
             Assert.NotNull(result);
             Assert.AreEqual(7, result.Count());
-            Assert.IsTrue(result.All(e => e.IBAN.Equals("DE64642525252525646425")));
-            Assert.IsTrue(result.All(e => e.BIC.Equals("25252525")));
-            Assert.IsTrue(result.All(e => e.ClientAccount.Equals("123456700")));
+            Assert.IsTrue(result.All(e => e.UserAccount.IBAN.Equals("DE64642525252525646425")));
+            Assert.IsTrue(result.All(e => e.UserAccount.BIC.Equals("25252525")));
+            Assert.IsTrue(result.All(e => e.UserAccount.ClientAccount.Equals("123456700")));
         }
 
         [Test]
         public async Task AddDuplicateTransaction_ErrorRaised()
         {
             var ctx = Ioc.Resolve<DataContext>();
+
+            var user = new CoBaUser
+            {
+                Name = "Name",
+                ClientAccount = "123456700",
+                BIC = "25252525",
+                IBAN = "DE64642525252525646425",
+            };
+            await ctx.CoBaUsers.AddAsync(user);
 
             var transaction = new CoBaTransaction
             {
@@ -91,13 +103,10 @@ namespace BTH.Tests
                 BookingText = "Kartenzahlung FKA UESTRA AG//Hannove/DE 2019-07-04T10:49:08 KFN 0 VJ 2112",
                 Amount = -13.20m,
                 Currency = "EUR",
-                ClientAccount = "123456700",
-                BIC = "25252525",
-                IBAN = "DE64642525252525646425",
-                Category = "Unkategorisierte Ausgaben"
+                Category = "Unkategorisierte Ausgaben",
+                UserAccount = user
             };
-
-            ctx.CoBaTransactions.Add(transaction);
+            await ctx.CoBaTransactions.AddAsync(transaction);
             await ctx.SaveChangesAsync();
 
             ctx.CoBaTransactions.Add(transaction);

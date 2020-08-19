@@ -1,4 +1,4 @@
-﻿using BHT.Core.Entities;
+﻿using BTH.Core.CsvData;
 using BTH.Core.Environment;
 using System;
 using System.IO;
@@ -9,7 +9,7 @@ namespace BHT.Core.Readers.CoBa
 {
     public class CoBaReader : ICoBaReader
     {
-        public async Task<CoBaTransaction[]> ParseCsvFileAsync(string csvFilePath)
+        public async Task<CoBaTransactionCsv[]> ParseCsvFileAsync(string csvFilePath)
         {
             var fileLines = await File.ReadAllLinesAsync(csvFilePath);
 
@@ -18,7 +18,7 @@ namespace BHT.Core.Readers.CoBa
                 try
                 {
                     var values = line.Split(';');
-                    return new CoBaTransaction()
+                    return new CoBaTransactionCsv()
                     {
                         BookingDate = Convert.ToDateTime(values[0], BTHCulture.CultureInfo),
                         ValueDate = Convert.ToDateTime(values[1], BTHCulture.CultureInfo),

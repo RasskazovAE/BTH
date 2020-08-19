@@ -99,7 +99,8 @@ namespace BTH.Core.ViewModels
             var fileName = _fileDialogExplorer.OpenFileDialog();
             if (!string.IsNullOrEmpty(fileName))
             {
-                var transactions = await _coBaReader.ParseCsvFileAsync(fileName);
+                var transactionsCsv = await _coBaReader.ParseCsvFileAsync(fileName);
+                var transactions = await _coBaService.GroupTransactions(transactionsCsv);
                 await _coBaService.AddNewAsync(transactions);
                 await LoadData();
             }
