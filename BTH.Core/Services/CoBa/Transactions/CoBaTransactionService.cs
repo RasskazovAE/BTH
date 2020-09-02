@@ -10,13 +10,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BHT.Core.Services.CoBa
+namespace BHT.Core.Services.CoBa.Transactions
 {
-    public class CoBaService : ICoBaService
+    public class CoBaTransactionService : ICoBaTransactionService
     {
         private readonly DataContext _ctx;
 
-        public CoBaService(DataContext ctx)
+        public CoBaTransactionService(DataContext ctx)
         {
             _ctx = ctx;
         }
@@ -39,6 +39,13 @@ namespace BHT.Core.Services.CoBa
                     };
                     await _ctx.CoBaUsers.AddAsync(user);
                 }
+                else
+                {
+                    user.ClientAccount = gr.Key.ClientAccount;
+                    user.BIC = gr.Key.BIC;
+                    _ctx.CoBaUsers.Update(user);
+                }
+                await _ctx.SaveChangesAsync();
                 transactions.AddRange(gr.Select(e => new CoBaTransaction
                 {
                     Amount = e.Amount,

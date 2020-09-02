@@ -1,6 +1,7 @@
 ﻿using BHT.Core.Readers.CoBa;
-using BHT.Core.Services.CoBa;
+using BHT.Core.Services.CoBa.Transactions;
 using BTH.Core.Context;
+using BTH.Core.Services.CoBa.Users;
 using MvvmCross.IoC;
 
 namespace BTH.Core
@@ -15,7 +16,8 @@ namespace BTH.Core
         public static void InstallInterfaces(this IMvxIoCProvider provider)
         {
             provider.RegisterType<ICoBaReader, CoBaReader>();
-            provider.RegisterType<ICoBaService, CoBaService>();
+            provider.RegisterType<ICoBaUserService, CoBaUserService>();
+            provider.RegisterType<ICoBaTransactionService, CoBaTransactionService>();
         }
     }
 }

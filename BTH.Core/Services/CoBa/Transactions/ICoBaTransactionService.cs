@@ -4,9 +4,9 @@ using BTH.Core.Dto;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace BHT.Core.Services.CoBa
+namespace BHT.Core.Services.CoBa.Transactions
 {
-    public interface ICoBaService
+    public interface ICoBaTransactionService
     {
         Task<IList<CoBaTransaction>> GroupTransactions(IList<CoBaTransactionCsv> coBaTransactionsCsv);
 

@@ -1,6 +1,6 @@
 ﻿using BHT.Core.Entities;
 using BHT.Core.Readers.CoBa;
-using BHT.Core.Services.CoBa;
+using BHT.Core.Services.CoBa.Transactions;
 using BTH.Core.Dto;
 using BTH.Core.ViewModels.Interfaces;
 using MvvmCross.Commands;
@@ -17,7 +17,7 @@ namespace BTH.Core.ViewModels
         private readonly IFileDialogExplorer _fileDialogExplorer;
         private readonly IPrintService _printService;
         private readonly ICoBaReader _coBaReader;
-        private readonly ICoBaService _coBaService;
+        private readonly ICoBaTransactionService _coBaService;
 
         private Filter _filter;
         public Filter Filter
@@ -73,7 +73,7 @@ namespace BTH.Core.ViewModels
             IFileDialogExplorer fileDialogExplorer,
             IPrintService printService,
             ICoBaReader coBaReader,
-            ICoBaService coBaService)
+            ICoBaTransactionService coBaService)
         {
             _fileDialogExplorer = fileDialogExplorer;
             _printService = printService;

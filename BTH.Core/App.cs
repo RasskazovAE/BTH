@@ -13,7 +13,7 @@ namespace BTH.Core
             Mvx.IoCProvider.InstallInterfaces();
             Manager.Instance.Container = Mvx.IoCProvider;
 
-            RegisterAppStart<CoBaTransactionsViewModel>();
+            RegisterAppStart<CoBaUsersViewModel>();
         }
     }
 }

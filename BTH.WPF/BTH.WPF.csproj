@@ -30,6 +30,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="3.1.6" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.6" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.19" />
     <PackageReference Include="MvvmCross.Platforms.Wpf" Version="6.4.2" />
   </ItemGroup>
 

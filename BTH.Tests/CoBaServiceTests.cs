@@ -1,6 +1,6 @@
 ﻿using BHT.Core.Entities;
 using BHT.Core.Readers.CoBa;
-using BHT.Core.Services.CoBa;
+using BHT.Core.Services.CoBa.Transactions;
 using BTH.Core;
 using BTH.Core.Context;
 using BTH.Core.Dto;
@@ -28,7 +28,7 @@ namespace BTH.Tests
         public async Task LoadFileTwice_NoDuplicatesAdded()
         {
             var filter = new Filter() { EndDate = DateTime.Now};
-            var coBaService = Ioc.Resolve<ICoBaService>();
+            var coBaService = Ioc.Resolve<ICoBaTransactionService>();
             var result = await coBaService.Get(filter);
             Assert.AreEqual(0, result.Count());
 
@@ -61,7 +61,7 @@ namespace BTH.Tests
         public async Task LoadFileWithDuplicates_NoDuplicatesAdded()
         {
             var filter = new Filter() { EndDate = DateTime.Now };
-            var coBaService = Ioc.Resolve<ICoBaService>();
+            var coBaService = Ioc.Resolve<ICoBaTransactionService>();
             var result = await coBaService.Get(filter);
             Assert.AreEqual(0, result.Count());
 
