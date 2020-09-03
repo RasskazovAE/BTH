@@ -14,28 +14,43 @@
                  FontFamily="{md:MaterialDesignFont}"
                  mc:Ignorable="d" 
                  d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <ListBox x:Name="UserList" ItemsSource="{Binding Users}">
-            <ListBox.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel Name="WrapPanel"></WrapPanel>
-                </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <md:ColorZone Mode="PrimaryMid" Padding="16" Width="200">
-                        <StackPanel Orientation="Vertical">
-                            <TextBlock Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="{Binding Name}" TextWrapping="Wrap"></TextBlock>
-                            <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="{Binding IBAN}"></TextBlock>
-                        </StackPanel>
-                    </md:ColorZone>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-            <Behaviors:Interaction.Triggers>
-                <Behaviors:EventTrigger EventName="SelectionChanged" SourceObject="{Binding ElementName=UserList}">
-                    <Behaviors:InvokeCommandAction Command="{Binding UserLoginCommand}" CommandParameter="{Binding ElementName=UserList, Path=SelectedItem}"/>
-                </Behaviors:EventTrigger>
-            </Behaviors:Interaction.Triggers>
-        </ListBox>
-    </Grid>
+    <DockPanel Margin="10" LastChildFill="True">
+        <Grid DockPanel.Dock="Top" HorizontalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Button Margin="10"
+                    Style="{DynamicResource MaterialDesignOutlinedButton}"
+                    Command="{Binding LoadFileCommand}"
+                    Content="Datei laden...">
+            </Button>
+        </Grid>
+        <Grid>
+            <ListBox x:Name="UserList" ItemsSource="{Binding Users}">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Name="WrapPanel"></WrapPanel>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <md:ColorZone Mode="PrimaryMid" Padding="16" Width="200">
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="{Binding Name}" TextWrapping="Wrap"></TextBlock>
+                                <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="{Binding IBAN}"></TextBlock>
+                            </StackPanel>
+                        </md:ColorZone>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+                <Behaviors:Interaction.Triggers>
+                    <Behaviors:EventTrigger EventName="SelectionChanged" SourceObject="{Binding ElementName=UserList}">
+                        <Behaviors:InvokeCommandAction Command="{Binding UserLoginCommand}" CommandParameter="{Binding ElementName=UserList, Path=SelectedItem}"/>
+                    </Behaviors:EventTrigger>
+                </Behaviors:Interaction.Triggers>
+            </ListBox>
+        </Grid>
+    </DockPanel>
 </mvvm:MvxWpfView>

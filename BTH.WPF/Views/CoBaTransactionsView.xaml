@@ -19,19 +19,23 @@
         <converters:NegativeCurrencyConverter x:Key="NegativeCurrencyConverter"/>
     </mvvm:MvxWpfView.Resources>
     <DockPanel Margin="10" LastChildFill="True">
-        <Grid DockPanel.Dock="Top" HorizontalAlignment="Center">
+        <Grid DockPanel.Dock="Top" HorizontalAlignment="Left">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
-            <Button Margin="10"
-                    Style="{DynamicResource MaterialDesignOutlinedButton}"
-                    Command="{Binding LoadFileCommand}"
-                    Content="Datei laden...">
+            <Button Style="{StaticResource MaterialDesignFlatButton}"
+                    Command="{Binding GoBackCommand}">
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <md:PackIcon Kind="ArrowLeft" />
+                        <TextBlock Text="Zurück"></TextBlock>
+                    </StackPanel>
+                </Button.Content>
             </Button>
-        </Grid >
+        </Grid>
         <Grid DockPanel.Dock="Top" Grid.IsSharedSizeScope="True">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition SharedSizeGroup="DateGroup" Width="125"/>

@@ -1,10 +1,10 @@
 ﻿using BHT.Core.Entities;
-using BHT.Core.Readers.CoBa;
 using BHT.Core.Services.CoBa.Transactions;
 using BTH.Core.Dto;
 using BTH.Core.Entities;
 using BTH.Core.ViewModels.Interfaces;
 using MvvmCross.Commands;
+using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
 using System;
 using System.Linq;
@@ -17,10 +17,9 @@ namespace BTH.Core.ViewModels
     {
         private CoBaUser _user;
 
-        private readonly IFileDialogExplorer _fileDialogExplorer;
-        private readonly IPrintService _printService;
-        private readonly ICoBaReader _coBaReader;
+        private readonly IMvxNavigationService _navigationService;
         private readonly ICoBaTransactionService _coBaService;
+        private readonly IPrintService _printService;
 
         private Filter _filter;
         public Filter Filter
@@ -32,13 +31,13 @@ namespace BTH.Core.ViewModels
             }
         }
 
-        private ICommand _loadFileCommand;
-        public ICommand LoadFileCommand
+        private ICommand _goBackCommand;
+        public ICommand GoBackCommand
         {
             get
             {
-                _loadFileCommand = _loadFileCommand ?? new MvxCommand(LoadFile);
-                return _loadFileCommand;
+                _goBackCommand = _goBackCommand ?? new MvxCommand(GoBack);
+                return _goBackCommand;
             }
         }
 
@@ -73,14 +72,12 @@ namespace BTH.Core.ViewModels
         }
 
         public CoBaTransactionsViewModel(
-            IFileDialogExplorer fileDialogExplorer,
-            IPrintService printService,
-            ICoBaReader coBaReader,
-            ICoBaTransactionService coBaService)
+            IMvxNavigationService navigationService,
+            ICoBaTransactionService coBaService,
+            IPrintService printService)
         {
-            _fileDialogExplorer = fileDialogExplorer;
+            _navigationService = navigationService;
             _printService = printService;
-            _coBaReader = coBaReader;
             _coBaService = coBaService;
         }
 
@@ -102,18 +99,6 @@ namespace BTH.Core.ViewModels
             await LoadData();
         }
 
-        private async void LoadFile()
-        {
-            var fileName = _fileDialogExplorer.OpenFileDialog();
-            if (!string.IsNullOrEmpty(fileName))
-            {
-                var transactionsCsv = await _coBaReader.ParseCsvFileAsync(fileName);
-                var transactions = await _coBaService.GroupTransactions(transactionsCsv);
-                await _coBaService.AddNewAsync(transactions);
-                await LoadData();
-            }
-        }
-
         private async Task LoadData()
         {
             // todo разобраться с передаваемым фильтром
@@ -125,6 +110,11 @@ namespace BTH.Core.ViewModels
         private void Print()
         {
             _printService.Print(Transactions.ToArray());
+        }
+
+        private async void GoBack()
+        {
+            await _navigationService.Navigate<CoBaUsersViewModel>();
         }
     }
 }
