@@ -2,6 +2,7 @@
 using BHT.Core.Readers.CoBa;
 using BHT.Core.Services.CoBa.Transactions;
 using BTH.Core.Dto;
+using BTH.Core.Entities;
 using BTH.Core.ViewModels.Interfaces;
 using MvvmCross.Commands;
 using MvvmCross.ViewModels;
@@ -12,8 +13,10 @@ using System.Windows.Input;
 
 namespace BTH.Core.ViewModels
 {
-    public class CoBaTransactionsViewModel : MvxViewModel
+    public class CoBaTransactionsViewModel : MvxViewModel<CoBaUser>
     {
+        private CoBaUser _user;
+
         private readonly IFileDialogExplorer _fileDialogExplorer;
         private readonly IPrintService _printService;
         private readonly ICoBaReader _coBaReader;
@@ -81,6 +84,11 @@ namespace BTH.Core.ViewModels
             _coBaService = coBaService;
         }
 
+        public override void Prepare(CoBaUser coBaUser)
+        {
+            _user = coBaUser;
+        }
+
         public override async void ViewAppeared()
         {
             base.ViewAppeared();
@@ -109,7 +117,7 @@ namespace BTH.Core.ViewModels
         private async Task LoadData()
         {
             // todo разобраться с передаваемым фильтром
-            var items = await _coBaService.Get(Filter);
+            var items = await _coBaService.Get(_user, Filter);
             Transactions.Clear();
             Array.ForEach(items, e => Transactions.Add(e));
         }

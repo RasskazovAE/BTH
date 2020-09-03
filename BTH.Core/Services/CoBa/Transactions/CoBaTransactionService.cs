@@ -74,9 +74,10 @@ namespace BHT.Core.Services.CoBa.Transactions
             await _ctx.SaveChangesAsync();
         }
 
-        public async Task<CoBaTransaction[]> Get(Filter filter)
+        public async Task<CoBaTransaction[]> Get(CoBaUser user, Filter filter)
         {
             return await _ctx.CoBaTransactions
+                .Where(e => e.UserAccountId == user.Id)
                 .ApplyFilter(filter)
                 .OrderByDescending(e => e.BookingDate)
                 .ToArrayAsync();

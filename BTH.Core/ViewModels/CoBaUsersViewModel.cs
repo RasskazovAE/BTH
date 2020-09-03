@@ -58,7 +58,7 @@ namespace BTH.Core.ViewModels
 
         private async void UserLogin(CoBaUser user)
         {
-            await _navigationService.Navigate<CoBaTransactionsViewModel>();
+            await _navigationService.Navigate<CoBaTransactionsViewModel, CoBaUser>(user);
         }
     }
 }
