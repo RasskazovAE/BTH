@@ -29,8 +29,6 @@ namespace BTH.Tests
         {
             var filter = new Filter() { EndDate = DateTime.Now};
             var coBaService = Ioc.Resolve<ICoBaTransactionService>();
-            var result = await coBaService.Get(filter);
-            Assert.AreEqual(0, result.Count());
 
             var filePath = Path.Combine(Directory.GetCurrentDirectory(), "testdata\\data.csv");
 
@@ -38,8 +36,10 @@ namespace BTH.Tests
             var coBaTransactionsCsv = await reader.ParseCsvFileAsync(filePath);
             var coBaTransactions = await coBaService.GroupTransactions(coBaTransactionsCsv);
 
+            var user = coBaTransactions.First().UserAccount;
+
             await coBaService.AddNewAsync(coBaTransactions);
-            result = await coBaService.Get(filter);
+            var result = await coBaService.Get(user, filter);
 
             Assert.NotNull(result);
             Assert.AreEqual(7, result.Count());
@@ -48,7 +48,7 @@ namespace BTH.Tests
             Assert.IsTrue(result.All(e => e.UserAccount.ClientAccount.Equals("123456700")));
 
             await coBaService.AddNewAsync(coBaTransactions);
-            result = await coBaService.Get(filter);
+            result = await coBaService.Get(user, filter);
 
             Assert.NotNull(result);
             Assert.AreEqual(7, result.Count());
@@ -62,8 +62,6 @@ namespace BTH.Tests
         {
             var filter = new Filter() { EndDate = DateTime.Now };
             var coBaService = Ioc.Resolve<ICoBaTransactionService>();
-            var result = await coBaService.Get(filter);
-            Assert.AreEqual(0, result.Count());
 
             var filePath = Path.Combine(Directory.GetCurrentDirectory(), "testdata\\data_duplicates.csv");
 
@@ -71,8 +69,10 @@ namespace BTH.Tests
             var coBaTransactionsCsv = await reader.ParseCsvFileAsync(filePath);
             var coBaTransactions = await coBaService.GroupTransactions(coBaTransactionsCsv);
 
+            var user = coBaTransactions.First().UserAccount;
+
             await coBaService.AddNewAsync(coBaTransactions);
-            result = await coBaService.Get(filter);
+            var result = await coBaService.Get(user, filter);
 
             Assert.NotNull(result);
             Assert.AreEqual(7, result.Count());

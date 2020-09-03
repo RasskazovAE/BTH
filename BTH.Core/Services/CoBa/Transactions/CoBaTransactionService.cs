@@ -68,7 +68,7 @@ namespace BHT.Core.Services.CoBa.Transactions
             coBaTransactions = coBaTransactions.GroupBy(e => e.BookingText).Select(g => g.First());
             var transactions = await _ctx.CoBaTransactions.ToListAsync();
             //todo: add statistic, how many transactions already exist in Db
-            var newTransactions = coBaTransactions.Where(e => transactions.All(a => a.BookingText.Equals(e.BookingText, StringComparison.InvariantCultureIgnoreCase)));
+            var newTransactions = coBaTransactions.Where(e => transactions.All(a => !a.BookingText.Equals(e.BookingText, StringComparison.InvariantCultureIgnoreCase)));
 
             _ctx.CoBaTransactions.AddRange(newTransactions);
             await _ctx.SaveChangesAsync();
