@@ -5,6 +5,7 @@ using System.Windows.Data;
 
 namespace BTH.WPF.Converters
 {
+    [ValueConversion(typeof(decimal), typeof(string))]
     public class PositiveCurrencyConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

@@ -20,6 +20,13 @@ namespace BTH.Core.ViewModels
         private readonly IMvxNavigationService _navigationService;
         private readonly ICoBaUserService _coBaUserService;
 
+        private bool _isLoading;
+        public bool IsLoading
+        {
+            get => _isLoading;
+            set => SetProperty(ref _isLoading, value);
+        }
+
         private MvxObservableCollection<CoBaUser> _users;
         public MvxObservableCollection<CoBaUser> Users
         {
@@ -68,7 +75,16 @@ namespace BTH.Core.ViewModels
         {
             base.ViewAppeared();
 
-            await LoadData();
+            IsLoading = true;
+            try
+            {
+                await LoadData();
+            }
+            finally
+            {
+                IsLoading = false;
+            }
+            
         }
 
         private async void LoadFile()
@@ -76,10 +92,18 @@ namespace BTH.Core.ViewModels
             var fileName = _fileDialogExplorer.OpenFileDialog();
             if (!string.IsNullOrEmpty(fileName))
             {
-                var transactionsCsv = await _coBaReader.ParseCsvFileAsync(fileName);
-                var transactions = await _coBaService.GroupTransactions(transactionsCsv);
-                await _coBaService.AddNewAsync(transactions);
-                await LoadData();
+                IsLoading = true;
+                try
+                {
+                    var transactionsCsv = await _coBaReader.ParseCsvFileAsync(fileName);
+                    var transactions = await _coBaService.GroupTransactions(transactionsCsv);
+                    await _coBaService.AddNewAsync(transactions);
+                    await LoadData();
+                }
+                finally
+                {
+                    IsLoading = false;
+                }
             }
         }
 

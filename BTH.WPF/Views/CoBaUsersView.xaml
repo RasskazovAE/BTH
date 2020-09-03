@@ -6,6 +6,7 @@
                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
                  xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
                  xmlns:Behaviors="http://schemas.microsoft.com/xaml/behaviors"
+                 xmlns:converters="clr-namespace:BTH.WPF.Converters"
                  xmlns:local="clr-namespace:BTH.WPF.Views"
                  TextElement.Foreground="{DynamicResource MaterialDesignBody}"
                  Background="{DynamicResource MaterialDesignPaper}"
@@ -14,43 +15,127 @@
                  FontFamily="{md:MaterialDesignFont}"
                  mc:Ignorable="d" 
                  d:DesignHeight="450" d:DesignWidth="800">
-    <DockPanel Margin="10" LastChildFill="True">
-        <Grid DockPanel.Dock="Top" HorizontalAlignment="Center">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
-            </Grid.RowDefinitions>
-            <Button Margin="10"
+    <mvvm:MvxWpfView.Resources>
+        <converters:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
+    </mvvm:MvxWpfView.Resources>
+    <Grid>
+        <DockPanel Grid.ZIndex="1"  Margin="10" LastChildFill="True" IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBooleanConverter}}">
+            <Grid DockPanel.Dock="Top" HorizontalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Button Margin="10"
                     Style="{DynamicResource MaterialDesignOutlinedButton}"
                     Command="{Binding LoadFileCommand}"
                     Content="Datei laden...">
-            </Button>
-        </Grid>
-        <Grid>
-            <ListBox x:Name="UserList" ItemsSource="{Binding Users}">
-                <ListBox.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel Name="WrapPanel"></WrapPanel>
-                    </ItemsPanelTemplate>
-                </ListBox.ItemsPanel>
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <md:ColorZone Mode="PrimaryMid" Padding="16" Width="200">
-                            <StackPanel Orientation="Vertical">
-                                <TextBlock Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="{Binding Name}" TextWrapping="Wrap"></TextBlock>
-                                <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="{Binding IBAN}"></TextBlock>
-                            </StackPanel>
-                        </md:ColorZone>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-                <Behaviors:Interaction.Triggers>
-                    <Behaviors:EventTrigger EventName="SelectionChanged" SourceObject="{Binding ElementName=UserList}">
-                        <Behaviors:InvokeCommandAction Command="{Binding UserLoginCommand}" CommandParameter="{Binding ElementName=UserList, Path=SelectedItem}"/>
-                    </Behaviors:EventTrigger>
-                </Behaviors:Interaction.Triggers>
-            </ListBox>
-        </Grid>
-    </DockPanel>
+                </Button>
+            </Grid>
+            <Grid>
+                <ListBox x:Name="UserList" ItemsSource="{Binding Users}">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Name="WrapPanel"></WrapPanel>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <md:ColorZone Mode="PrimaryMid" Padding="16" Width="200">
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="{Binding Name}" TextWrapping="Wrap"></TextBlock>
+                                    <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="{Binding IBAN}"></TextBlock>
+                                </StackPanel>
+                            </md:ColorZone>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    <Behaviors:Interaction.Triggers>
+                        <Behaviors:EventTrigger EventName="SelectionChanged" SourceObject="{Binding ElementName=UserList}">
+                            <Behaviors:InvokeCommandAction Command="{Binding UserLoginCommand}" CommandParameter="{Binding ElementName=UserList, Path=SelectedItem}"/>
+                        </Behaviors:EventTrigger>
+                    </Behaviors:Interaction.Triggers>
+                </ListBox>
+            </Grid>
+        </DockPanel>
+        <md:Card
+            Grid.ZIndex="2"
+            UniformCornerRadius="14"
+            Width="28"
+            Height="28"
+            RenderTransformOrigin=".5,.5"
+            Padding="4">
+            <ProgressBar
+                Style="{StaticResource MaterialDesignCircularProgressBar}"
+                Value="0"
+                IsIndeterminate="True"
+                x:Name="AnimatedProgressInCard" />
+            <md:Card.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform
+                        x:Name="ScaleTransform"
+                        ScaleX="0"
+                        ScaleY="0" />
+                </TransformGroup>
+            </md:Card.RenderTransform>
+            <md:Card.Style>
+                <Style TargetType="md:Card" BasedOn="{StaticResource {x:Type md:Card}}">
+                    <Style.Resources>
+                        <Storyboard
+                            x:Key="FadeIn"
+                            FillBehavior="HoldEnd">
+                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)">
+                                <EasingDoubleKeyFrame Value="0" />
+                                <EasingDoubleKeyFrame Value="1" KeyTime="0:0:0.2">
+                                    <EasingDoubleKeyFrame.EasingFunction>
+                                        <CircleEase EasingMode="EaseOut" />
+                                    </EasingDoubleKeyFrame.EasingFunction>
+                                </EasingDoubleKeyFrame>
+                            </DoubleAnimationUsingKeyFrames>
+                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)">
+                                <EasingDoubleKeyFrame Value="0" />
+                                <EasingDoubleKeyFrame Value="1" KeyTime="0:0:0.2">
+                                    <EasingDoubleKeyFrame.EasingFunction>
+                                        <CircleEase EasingMode="EaseOut" />
+                                    </EasingDoubleKeyFrame.EasingFunction>
+                                </EasingDoubleKeyFrame>
+                            </DoubleAnimationUsingKeyFrames>
+                        </Storyboard>
+                        <Storyboard x:Key="FadeOut">
+                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)">
+                                <EasingDoubleKeyFrame Value="1" />
+                                <EasingDoubleKeyFrame Value="0" KeyTime="0:0:0.2">
+                                    <EasingDoubleKeyFrame.EasingFunction>
+                                        <CircleEase EasingMode="EaseOut" />
+                                    </EasingDoubleKeyFrame.EasingFunction>
+                                </EasingDoubleKeyFrame>
+                            </DoubleAnimationUsingKeyFrames>
+                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)">
+                                <EasingDoubleKeyFrame Value="1" />
+                                <EasingDoubleKeyFrame Value="0" KeyTime="0:0:0.2">
+                                    <EasingDoubleKeyFrame.EasingFunction>
+                                        <CircleEase EasingMode="EaseOut" />
+                                    </EasingDoubleKeyFrame.EasingFunction>
+                                </EasingDoubleKeyFrame>
+                            </DoubleAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </Style.Resources>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsLoading}" Value="true">
+                            <DataTrigger.EnterActions>
+                                <RemoveStoryboard BeginStoryboardName="FadeOut" />
+                                <BeginStoryboard Storyboard="{StaticResource FadeIn}" Name="FadeIn" />
+                            </DataTrigger.EnterActions>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsLoading}" Value="false">
+                            <DataTrigger.EnterActions>
+                                <RemoveStoryboard BeginStoryboardName="FadeIn" />
+                                <BeginStoryboard Storyboard="{StaticResource FadeOut}" Name="FadeOut" />
+                            </DataTrigger.EnterActions>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </md:Card.Style>
+        </md:Card>
+    </Grid>
 </mvvm:MvxWpfView>
