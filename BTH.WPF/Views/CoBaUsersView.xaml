@@ -7,17 +7,15 @@
                  xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
                  xmlns:Behaviors="http://schemas.microsoft.com/xaml/behaviors"
                  xmlns:converters="clr-namespace:BTH.WPF.Converters"
-                 xmlns:local="clr-namespace:BTH.WPF.Views"
+                 xmlns:c="clr-namespace:BTH.WPF.Controls"
                  TextElement.Foreground="{DynamicResource MaterialDesignBody}"
                  Background="{DynamicResource MaterialDesignPaper}"
                  TextElement.FontWeight="Medium"
                  TextElement.FontSize="14"
                  FontFamily="{md:MaterialDesignFont}"
+                 Name="UsersView"
                  mc:Ignorable="d" 
                  d:DesignHeight="450" d:DesignWidth="800">
-    <mvvm:MvxWpfView.Resources>
-        <converters:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
-    </mvvm:MvxWpfView.Resources>
     <Grid>
         <DockPanel Grid.ZIndex="1"  Margin="10" LastChildFill="True" IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBooleanConverter}}">
             <Grid DockPanel.Dock="Top" HorizontalAlignment="Center">
@@ -34,28 +32,68 @@
                 </Button>
             </Grid>
             <Grid>
-                <ListBox x:Name="UserList" ItemsSource="{Binding Users}">
-                    <ListBox.ItemsPanel>
+                <ItemsControl Name="UserList" ItemsSource="{Binding UserViewModels}">
+                    <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <WrapPanel Name="WrapPanel"></WrapPanel>
                         </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
-                    <ListBox.ItemTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <md:ColorZone Mode="PrimaryMid" Padding="16" Width="200">
-                                <StackPanel Orientation="Vertical">
-                                    <TextBlock Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="{Binding Name}" TextWrapping="Wrap"></TextBlock>
-                                    <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="{Binding IBAN}"></TextBlock>
-                                </StackPanel>
-                            </md:ColorZone>
+                            <md:Flipper Style="{StaticResource MaterialDesignCardFlipper}" Width="300" Height="auto">
+                                <md:Flipper.FrontContent>
+                                    <Grid>
+                                        <StackPanel>
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                                <Button Style="{StaticResource MaterialDesignFlatButton}" Command="{x:Static md:Flipper.FlipCommand}">
+                                                    <md:PackIcon Kind="Edit"></md:PackIcon>
+                                                </Button>
+                                            </StackPanel>
+                                            <Button Style="{StaticResource MaterialDesignOutlinedButton}"
+                                                    Command="{Binding UserLoginCommand}"
+                                                    Foreground="White"
+                                                    BorderThickness="0"
+                                                    Height="auto">
+                                                <Button.Content>
+                                                    <StackPanel Margin="8">
+                                                        <TextBlock Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="{Binding User.Name}" Width="284"></TextBlock>
+                                                        <TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}" Text="{Binding User.IBAN}"></TextBlock>
+                                                    </StackPanel>
+                                                </Button.Content>
+                                            </Button>
+                                        </StackPanel>
+                                    </Grid>
+                                </md:Flipper.FrontContent>
+                                <md:Flipper.BackContent>
+                                    <StackPanel>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Button Grid.Column="0" Style="{StaticResource MaterialDesignFlatButton}"
+                                                    Command="{x:Static md:Flipper.FlipCommand}">
+                                                <md:PackIcon Kind="ArrowLeft"></md:PackIcon>
+                                            </Button>
+                                            <Button Grid.Column="2" Style="{StaticResource MaterialDesignFlatAccentButton}"
+                                                    Command="{Binding UserSaveCommand}"
+                                                    CommandParameter="{Binding}">
+                                                <md:PackIcon Kind="Check"></md:PackIcon>
+                                            </Button>
+                                        </Grid>
+                                        <StackPanel Margin="8">
+                                            <TextBox Text="{Binding User.Name}"
+                                                     md:HintAssist.Hint="Name"
+                                                     md:HintAssist.IsFloating="True"
+                                                     Width="284"></TextBox>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </md:Flipper.BackContent>
+                            </md:Flipper>
                         </DataTemplate>
-                    </ListBox.ItemTemplate>
-                    <Behaviors:Interaction.Triggers>
-                        <Behaviors:EventTrigger EventName="SelectionChanged" SourceObject="{Binding ElementName=UserList}">
-                            <Behaviors:InvokeCommandAction Command="{Binding UserLoginCommand}" CommandParameter="{Binding ElementName=UserList, Path=SelectedItem}"/>
-                        </Behaviors:EventTrigger>
-                    </Behaviors:Interaction.Triggers>
-                </ListBox>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
             </Grid>
         </DockPanel>
         <md:Card

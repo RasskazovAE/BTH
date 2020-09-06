@@ -7,6 +7,7 @@
                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                  xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
                  xmlns:converters="clr-namespace:BTH.WPF.Converters"
+                 xmlns:controls="clr-namespace:BTH.WPF.Controls"
                  TextElement.Foreground="{DynamicResource MaterialDesignBody}"
                  Background="{DynamicResource MaterialDesignPaper}"
                  TextElement.FontWeight="Medium"
@@ -18,95 +19,98 @@
         <converters:PositiveCurrencyConverter x:Key="PositiveCurrencyConverter"/>
         <converters:NegativeCurrencyConverter x:Key="NegativeCurrencyConverter"/>
     </mvvm:MvxWpfView.Resources>
-    <DockPanel Margin="10" LastChildFill="True">
-        <Grid DockPanel.Dock="Top" HorizontalAlignment="Left">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
-            </Grid.RowDefinitions>
-            <Button Style="{StaticResource MaterialDesignFlatButton}"
+    <Grid>
+        <DockPanel Grid.ZIndex="1" Margin="10" LastChildFill="True" IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBooleanConverter}}">
+            <Grid DockPanel.Dock="Top" HorizontalAlignment="Left">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Button Style="{StaticResource MaterialDesignFlatButton}"
                     Command="{Binding GoBackCommand}">
-                <Button.Content>
-                    <StackPanel Orientation="Horizontal">
-                        <md:PackIcon Kind="ArrowLeft" />
-                        <TextBlock Text="Zurück"></TextBlock>
-                    </StackPanel>
-                </Button.Content>
-            </Button>
-        </Grid>
-        <Grid DockPanel.Dock="Top" Grid.IsSharedSizeScope="True">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition SharedSizeGroup="DateGroup" Width="125"/>
-                <ColumnDefinition SharedSizeGroup="DateGroup"/>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="150"/>
-                <ColumnDefinition Width="auto"/>
-            </Grid.ColumnDefinitions>
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <md:PackIcon Kind="ArrowLeft" />
+                            <TextBlock Text="Zurück"></TextBlock>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+            </Grid>
+            <Grid DockPanel.Dock="Top" Grid.IsSharedSizeScope="True">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition SharedSizeGroup="DateGroup" Width="125"/>
+                    <ColumnDefinition SharedSizeGroup="DateGroup"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
 
-            <DatePicker x:Name="StartDate" Grid.Column="0" md:HintAssist.Hint="Von:"
+                <DatePicker x:Name="StartDate" Grid.Column="0" md:HintAssist.Hint="Von:"
                         validation:AttachedProperties.RegisterEndDate="{Binding Filter.EndDate}"
                         SelectedDate="{Binding Path=Filter.StartDate, UpdateSourceTrigger=PropertyChanged}"/>
 
-            <DatePicker x:Name="EndDate" Grid.Column="1" md:HintAssist.Hint="Bis:"
+                <DatePicker x:Name="EndDate" Grid.Column="1" md:HintAssist.Hint="Bis:"
                         validation:AttachedProperties.RegisterStartDate="{Binding Filter.StartDate}"
                         SelectedDate="{Binding Path=Filter.EndDate, UpdateSourceTrigger=PropertyChanged}"/>
 
-            <Grid Grid.Column="2" Margin="50 0 50 0" VerticalAlignment="Bottom">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <md:PackIcon Grid.Column="0" Kind="Search" VerticalAlignment="Center"
+                <Grid Grid.Column="2" Margin="50 0 50 0" VerticalAlignment="Bottom">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <md:PackIcon Grid.Column="0" Kind="Search" VerticalAlignment="Center"
                              Foreground="{Binding ElementName=SearchTextBox, Path=BorderBrush}" />
-                <TextBox Text="{Binding Path=Filter.SearchText}" Grid.Column="1" x:Name="SearchTextBox"
+                    <TextBox Text="{Binding Path=Filter.SearchText}" Grid.Column="1" x:Name="SearchTextBox"
                          VerticalAlignment="Center" md:HintAssist.Hint="Suchen..."></TextBox>
-            </Grid>
+                </Grid>
 
-            <Button Grid.Column="3" VerticalAlignment="Bottom"
+                <Button Grid.Column="3" VerticalAlignment="Bottom"
                     Style="{StaticResource MaterialDesignFlatButton}"
                     Command="{Binding FilterApplyCommand}"
                     Content="Filter anwenden">
-            </Button>
+                </Button>
 
-            <Button Grid.Column="4" VerticalAlignment="Bottom"
+                <Button Grid.Column="4" VerticalAlignment="Bottom"
                     Width="35" Padding="0" Margin="10 0 0 0"
                     Style="{StaticResource MaterialDesignFlatButton}"
                     Content="{md:PackIcon Kind=Printer}"
                     Command="{Binding PrintCommand}"
                     ToolTip="Druckvorschau" />
-        </Grid>
-        <DataGrid ItemsSource="{Binding Transactions}" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Buchungstag" Width="auto" Binding="{Binding BookingDate, StringFormat=\{0:dd.MM.yyyy\}}"/>
-                <DataGridTextColumn Header="Wertstellung" Width="auto" Binding="{Binding ValueDate, StringFormat=\{0:dd.MM.yyyy\}}"/>
-                <DataGridTextColumn Header="Umsatzart" Width="auto" Binding="{Binding TurnoverType}"/>
-                <DataGridTemplateColumn Header="Buchungstext" Width="*">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding BookingText}"
+            </Grid>
+            <DataGrid ItemsSource="{Binding Transactions}" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Buchungstag" Width="auto" Binding="{Binding BookingDate, StringFormat=\{0:dd.MM.yyyy\}}"/>
+                    <DataGridTextColumn Header="Wertstellung" Width="auto" Binding="{Binding ValueDate, StringFormat=\{0:dd.MM.yyyy\}}"/>
+                    <DataGridTextColumn Header="Umsatzart" Width="auto" Binding="{Binding TurnoverType}"/>
+                    <DataGridTemplateColumn Header="Buchungstext" Width="*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding BookingText}"
                                        TextWrapping="Wrap"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="zu Lasten" Width="auto">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Amount, Converter={StaticResource NegativeCurrencyConverter}}">
-                            </TextBlock>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="zu Gunsten" Width="auto">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Amount, Converter={StaticResource PositiveCurrencyConverter}}">
-                            </TextBlock>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
-        </DataGrid>
-    </DockPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="zu Lasten" Width="auto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Amount, Converter={StaticResource NegativeCurrencyConverter}}">
+                                </TextBlock>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="zu Gunsten" Width="auto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Amount, Converter={StaticResource PositiveCurrencyConverter}}">
+                                </TextBlock>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </DockPanel>
+        <controls:LoadingPanel Grid.ZIndex="2" IsLoading="{Binding IsLoading}"/>
+    </Grid>
 </mvvm:MvxWpfView>

@@ -21,6 +21,13 @@ namespace BTH.Core.ViewModels
         private readonly ICoBaTransactionService _coBaService;
         private readonly IPrintService _printService;
 
+        private bool _isLoading;
+        public bool IsLoading
+        {
+            get => _isLoading;
+            set => SetProperty(ref _isLoading, value);
+        }
+
         private Filter _filter;
         public Filter Filter
         {
@@ -101,10 +108,12 @@ namespace BTH.Core.ViewModels
 
         private async Task LoadData()
         {
+            IsLoading = true;
             // todo разобраться с передаваемым фильтром
             var items = await _coBaService.Get(_user, Filter);
             Transactions.Clear();
             Array.ForEach(items, e => Transactions.Add(e));
+            IsLoading = false;
         }
 
         private void Print()

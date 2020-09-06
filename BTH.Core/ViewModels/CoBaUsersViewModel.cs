@@ -27,13 +27,13 @@ namespace BTH.Core.ViewModels
             set => SetProperty(ref _isLoading, value);
         }
 
-        private MvxObservableCollection<CoBaUser> _users;
-        public MvxObservableCollection<CoBaUser> Users
+        private MvxObservableCollection<CoBaUserViewModel> _userViewModels;
+        public MvxObservableCollection<CoBaUserViewModel> UserViewModels
         {
             get
             {
-                _users = _users ?? new MvxObservableCollection<CoBaUser>();
-                return _users;
+                _userViewModels = _userViewModels ?? new MvxObservableCollection<CoBaUserViewModel>();
+                return _userViewModels;
             }
         }
 
@@ -44,16 +44,6 @@ namespace BTH.Core.ViewModels
             {
                 _loadFileCommand = _loadFileCommand ?? new MvxCommand(LoadFile);
                 return _loadFileCommand;
-            }
-        }
-
-        private ICommand _userLoginCommand;
-        public ICommand UserLoginCommand
-        {
-            get
-            {
-                _userLoginCommand = _userLoginCommand ?? new MvxCommand<CoBaUser>(UserLogin);
-                return _userLoginCommand;
             }
         }
 
@@ -110,13 +100,26 @@ namespace BTH.Core.ViewModels
         private async Task LoadData()
         {
             var items = await _coBaUserService.GetAll();
-            Users.Clear();
-            Array.ForEach(items, e => Users.Add(e));
+            foreach(var vm in UserViewModels)
+            {
+                vm.UserClicked -= UserLogin;
+            }
+            UserViewModels.Clear();
+            Array.ForEach(items, e =>
+            {
+                var vm = new CoBaUserViewModel(e, _coBaUserService);
+                vm.UserClicked += UserLogin;
+                UserViewModels.Add(vm);
+            });
         }
 
-        private async void UserLogin(CoBaUser user)
+        private async void UserLogin(object sender, EventArgs e)
         {
-            await _navigationService.Navigate<CoBaTransactionsViewModel, CoBaUser>(user);
+            var user = sender as CoBaUser;
+            if(user != null)
+            {
+                await _navigationService.Navigate<CoBaTransactionsViewModel, CoBaUser>(user);
+            }
         }
     }
 }

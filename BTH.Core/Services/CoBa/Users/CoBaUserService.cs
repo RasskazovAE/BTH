@@ -18,5 +18,11 @@ namespace BTH.Core.Services.CoBa.Users
         {
             return await _ctx.CoBaUsers.ToArrayAsync();
         }
+
+        public async Task Update(CoBaUser user)
+        {
+            _ctx.Update(user);
+            await _ctx.SaveChangesAsync();
+        }
     }
 }
