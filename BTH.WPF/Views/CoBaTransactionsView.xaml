@@ -6,6 +6,7 @@
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                  xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+                 xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
                  xmlns:converters="clr-namespace:BTH.WPF.Converters"
                  xmlns:controls="clr-namespace:BTH.WPF.Controls"
                  TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -49,11 +50,23 @@
 
                 <DatePicker x:Name="StartDate" Grid.Column="0" md:HintAssist.Hint="Von:"
                         validation:AttachedProperties.RegisterEndDate="{Binding Filter.EndDate}"
-                        SelectedDate="{Binding Path=Filter.StartDate, UpdateSourceTrigger=PropertyChanged}"/>
+                        SelectedDate="{Binding Path=Filter.StartDate, UpdateSourceTrigger=PropertyChanged}">
+                    <behaviors:Interaction.Triggers>
+                        <behaviors:EventTrigger EventName="SelectedDateChanged" SourceObject="{Binding ElementName=StartDate}">
+                            <behaviors:InvokeCommandAction Command="{Binding FilterApplyCommand}"></behaviors:InvokeCommandAction>
+                        </behaviors:EventTrigger>
+                    </behaviors:Interaction.Triggers>
+                </DatePicker>
 
                 <DatePicker x:Name="EndDate" Grid.Column="1" md:HintAssist.Hint="Bis:"
                         validation:AttachedProperties.RegisterStartDate="{Binding Filter.StartDate}"
-                        SelectedDate="{Binding Path=Filter.EndDate, UpdateSourceTrigger=PropertyChanged}"/>
+                        SelectedDate="{Binding Path=Filter.EndDate, UpdateSourceTrigger=PropertyChanged}">
+                    <behaviors:Interaction.Triggers>
+                        <behaviors:EventTrigger EventName="SelectedDateChanged" SourceObject="{Binding ElementName=EndDate}">
+                            <behaviors:InvokeCommandAction Command="{Binding FilterApplyCommand}"></behaviors:InvokeCommandAction>
+                        </behaviors:EventTrigger>
+                    </behaviors:Interaction.Triggers>
+                </DatePicker>
 
                 <Grid Grid.Column="2" Margin="50 0 50 0" VerticalAlignment="Bottom">
                     <Grid.ColumnDefinitions>
@@ -62,8 +75,12 @@
                     </Grid.ColumnDefinitions>
                     <md:PackIcon Grid.Column="0" Kind="Search" VerticalAlignment="Center"
                              Foreground="{Binding ElementName=SearchTextBox, Path=BorderBrush}" />
-                    <TextBox Text="{Binding Path=Filter.SearchText}" Grid.Column="1" x:Name="SearchTextBox"
-                         VerticalAlignment="Center" md:HintAssist.Hint="Suchen..."></TextBox>
+                    <TextBox Text="{Binding Path=Filter.SearchText, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" x:Name="SearchTextBox"
+                         VerticalAlignment="Center" md:HintAssist.Hint="Suchen...">
+                        <TextBox.InputBindings>
+                            <KeyBinding Command="{Binding FilterApplyCommand}" Key="Enter"></KeyBinding>
+                        </TextBox.InputBindings>
+                    </TextBox>
                 </Grid>
 
                 <Button Grid.Column="3" VerticalAlignment="Bottom"
