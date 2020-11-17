@@ -1,5 +1,5 @@
 ﻿using BHT.Core.Entities;
-using BTH.Core.DbSupport;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 
 namespace BTH.Core.Entities
@@ -7,6 +7,7 @@ namespace BTH.Core.Entities
     /// <summary>
     /// User
     /// </summary>
+    [Index(nameof(IBAN), IsUnique = true)]
     public class CoBaUser : EntityBase
     {
         /// <summary>
@@ -27,7 +28,6 @@ namespace BTH.Core.Entities
         /// <summary>
         /// IBAN of client account
         /// </summary>
-        [Index(IsUnique = true)]
         public string IBAN { get; set; }
 
         /// <summary>

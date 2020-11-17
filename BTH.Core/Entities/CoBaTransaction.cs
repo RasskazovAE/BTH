@@ -1,5 +1,5 @@
-﻿using BTH.Core.DbSupport;
-using BTH.Core.Entities;
+﻿using BTH.Core.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -8,6 +8,7 @@ namespace BHT.Core.Entities
     /// <summary>
     /// Transaction for commerzbank
     /// </summary>
+    [Index(nameof(BookingText), IsUnique = true)]
     public class CoBaTransaction : EntityBase
     {
         /// <summary>
@@ -28,7 +29,6 @@ namespace BHT.Core.Entities
         /// <summary>
         /// Booking text
         /// </summary>
-        [Index(IsUnique = true)]
         public string BookingText { get; set; }
 
         /// <summary>
