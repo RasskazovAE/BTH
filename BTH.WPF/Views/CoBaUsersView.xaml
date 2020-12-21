@@ -7,6 +7,7 @@
                  xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
                  xmlns:Behaviors="http://schemas.microsoft.com/xaml/behaviors"
                  xmlns:converters="clr-namespace:BTH.WPF.Converters"
+                 xmlns:services="clr-namespace:BTH.WPF.Services"
                  xmlns:c="clr-namespace:BTH.WPF.Controls"
                  TextElement.Foreground="{DynamicResource MaterialDesignBody}"
                  Background="{DynamicResource MaterialDesignPaper}"
@@ -175,5 +176,6 @@
                 </Style>
             </md:Card.Style>
         </md:Card>
+        <md:Snackbar MessageQueue="{x:Static services:NotificationService.MessageQueue}" x:Name="NotificationSnackbar" />
     </Grid>
 </mvvm:MvxWpfView>

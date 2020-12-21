@@ -7,6 +7,7 @@ using MvvmCross.Commands;
 using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
 using System;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -19,7 +20,7 @@ namespace BTH.Core.ViewModels
         private readonly ICoBaTransactionService _coBaService;
         private readonly IMvxNavigationService _navigationService;
         private readonly ICoBaUserService _coBaUserService;
-
+        private readonly INotificationService _notificationService;
         private bool _isLoading;
         public bool IsLoading
         {
@@ -52,13 +53,15 @@ namespace BTH.Core.ViewModels
             ICoBaReader coBaReader,
             ICoBaTransactionService coBaService,
             IMvxNavigationService navigationService,
-            ICoBaUserService coBaUserService)
+            ICoBaUserService coBaUserService,
+            INotificationService notificationService)
         {
             _fileDialogExplorer = fileDialogExplorer;
             _coBaReader = coBaReader;
             _coBaService = coBaService;
             _navigationService = navigationService;
             _coBaUserService = coBaUserService;
+            _notificationService = notificationService;
         }
 
         public override async void ViewAppeared()
@@ -89,6 +92,7 @@ namespace BTH.Core.ViewModels
                     var transactions = await _coBaService.GroupTransactions(transactionsCsv);
                     await _coBaService.AddNewAsync(transactions);
                     await LoadData();
+                    _notificationService.Notify($"File '{Path.GetFileName(fileName)}' downloaded");
                 }
                 finally
                 {

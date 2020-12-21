@@ -10,6 +10,7 @@ namespace BTH.WPF
         {
             provider.RegisterType<IFileDialogExplorer, FileDialogExplorer>();
             provider.RegisterType<IPrintService, PrintService>();
+            provider.RegisterType<INotificationService, NotificationService>();
         }
     }
 }
